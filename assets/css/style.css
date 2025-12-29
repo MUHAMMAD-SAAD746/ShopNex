@@ -1,0 +1,133 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Utilities */
+.fw-bold {
+    font-weight: 600 !important;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+} */
+
+.text-primary {
+    color: #0d6efd !important;
+}
+
+/* Admin Layout */
+.admin-sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+    color: white;
+    z-index: 1000;
+    padding-top: 1rem;
+}
+
+.admin-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.8rem 1.5rem;
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.admin-content {
+    margin-left: 250px;
+    padding: 2rem;
+}
+
+
+.btn-danger {
+    color: white !important;
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .admin-content {
+        margin-left: 0;
+    }
+}
+
+/* User Layout */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/1920x600?text=Hero+Image');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+.success {
+    background: #198754 !important;
+}
+
+.error {
+    background: #dc3545 !important;
+}
+
+/* CSS-only Modal */
+#modal-toggle {
+    display: none;
+}
+
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+}
+
+.custom-modal-card {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+#modal-toggle:checked+.custom-modal-overlay {
+    display: flex;
+}
+
+.modal-close-label {
+    cursor: pointer;
+}
