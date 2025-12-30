@@ -95,6 +95,10 @@ body {
     background: #dc3545 !important;
 }
 
+.info {
+    background: #ffc107 !important;
+}
+
 /* CSS-only Modal */
 #modal-toggle {
     display: none;
