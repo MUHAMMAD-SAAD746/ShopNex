@@ -215,3 +215,20 @@ function cancelModal() {
 
     modalToggle.checked = false;
 }
+
+
+
+
+
+function deleteCategory(categoryId) {
+    var confirmDelete = confirm("Are you sure you want to delete this category?");
+    if (confirmDelete) {
+        firebase
+            .database()
+            .ref("categories")
+            .child(categoryId)
+            .remove();
+        toast("Category deleted successfully", "success", 2000);
+        getCategories();
+    }
+}
