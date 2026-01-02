@@ -29,7 +29,7 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
     }).showToast();
 }
 
-
+var imageURL = "";
 var categoryName = document.getElementById("categoryName");
 var numProduct = document.getElementById("numProducts");
 var modalToggle = document.getElementById("modal-toggle");
@@ -66,10 +66,10 @@ function getCategories() {
                 activeBtnClass += " btn-light"
                 inactiveBtnClass += " btn-danger fw-bold"
             }
-
+// https://placehold.co/50x50
             tableBody.innerHTML += `
                 <tr>
-                    <td><img src="https://placehold.co/50x50" class="rounded" alt=""></td>
+                    <td><img src="${categoryObj[i].userProfileURL}" class="rounded" alt="" id="category-img"></td>
                     <td>${categoryObj[i].categoryName}</td>
                     <td class="text-center">${categoryObj[i].numProduct}</td>
                     <td class="text-center">
@@ -98,13 +98,21 @@ async function saveCategory() {
     var checkedStatus = document.querySelector(".checkedStatus:checked").value;
     categoryId = await firebase.database().ref("categories").push(categoryObj).getKey();
     console.log(categoryId);
+
+    var userProfileURL = await uploadImage();
+    if (userProfileURL == null) {
+        toast("Image upload failed. Please try again.", "error", 3500);
+        return;
+    }    
+
     var categoryObj = {
         categoryName: categoryName.value,
         numProduct: numProduct.value,
         checkedStatus: checkedStatus,
-        ID: categoryId
+        ID: categoryId,
+        userProfileURL: userProfileURL
     }
-    console.log(categoryId);
+    // console.log(categoryId);
 
     try {
         await firebase.database().ref("categories").child(categoryId).set(categoryObj);
@@ -116,6 +124,7 @@ async function saveCategory() {
     }
     getCategories();
     console.log(categoryId);
+
 }
 
 
@@ -182,11 +191,18 @@ async function updateCategory(categoryId) {
     var checkedStatus = document.querySelector(".checkedStatus:checked").value;
     categoryId = categoryId || null;
 
+    var userProfileURL = await uploadImage();
+    if (userProfileURL == null) {
+        toast("Image upload failed. Please try again.", "error", 3500);
+        return;
+    }   
+
     var categoryObj = {
         categoryName: categoryName.value,
         numProduct: numProduct.value,
         checkedStatus: checkedStatus,
-        ID: categoryId
+        ID: categoryId,
+        userProfileURL: userProfileURL
     }
     // console.log(categoryId);
 
@@ -219,7 +235,6 @@ function cancelModal() {
 
 
 
-
 function deleteCategory(categoryId) {
     var confirmDelete = confirm("Are you sure you want to delete this category?");
     if (confirmDelete) {
@@ -231,4 +246,44 @@ function deleteCategory(categoryId) {
         toast("Category deleted successfully", "success", 2000);
         getCategories();
     }
+}
+
+
+
+
+async function uploadImage() {
+    var imageInput = document.getElementById("image");
+    console.log(imageInput.files[0]);
+
+    var imageSize = imageInput.files[0].size / 1024 / 1024; // size in MB
+    // default is in byte divide to convert from byte to kb and again divide to convert from kb to mb
+    
+    if (imageSize > 2) {
+        // alert("Image size should be less than 2MB");
+        toast("Image size should be less than 2MB", "error", 3500);
+        return null;
+    }
+
+    const formdata = new FormData();
+    formdata.append("file", imageInput.files[0]);
+    formdata.append("upload_preset", "ShopNex-Category");
+
+    const requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow"
+    };
+
+    await fetch("https://api.cloudinary.com/v1_1/dn7oklgm7/image/upload", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result)
+            imageURL = result["secure_url"];
+            return imageURL;
+        })
+        .catch((error) => {console.error(error)
+            return null
+        });
+
+        return imageURL;
 }
