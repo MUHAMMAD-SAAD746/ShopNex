@@ -71,7 +71,7 @@ async function logIn() {
 function redirect(){
     var isLoggedIn = localStorage.getItem("adminLogin")
     if (isLoggedIn) {
-        window.location.href = "../../../admin/dashboard.html"
+        window.location.href = "../admin/dashboard.html"
     }
 }
 redirect()
