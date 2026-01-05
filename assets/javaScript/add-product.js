@@ -30,6 +30,13 @@ function logOut() {
 var selectCategory = document.getElementById("select-category")
 var productID = null
 var imageURL = "";
+var imageInput = document.getElementById("productImages");
+var productName = document.getElementById("productTitle");
+var productDescription = document.getElementById("productDescription");
+var productPrice = document.getElementById("productPrice");
+var productCategory = document.getElementById("select-category");
+var productStock = document.getElementById("productStock");
+
 
 async function getCategories() {
     await firebase.database().ref("categories").get().then((snapshot) => {
@@ -57,39 +64,52 @@ getCategories()
 async function saveProduct() {
     event.preventDefault();
 
-    var productName = document.getElementById("productTitle").value;
-    var productDescription = document.getElementById("productDescription").value;
-    var productPrice = document.getElementById("productPrice").value;
-    var productCategory = document.getElementById("select-category").value;
-    var productStock = document.getElementById("productStock").value;
-    var productImgURL = await uploadImage();
-    var status = document.querySelector(".form-check-input:checked").value;
-    var category = document.getElementById("select-category").value;
+    if (imageInput.files.length === 0) {
+        toast("Please select an image to upload", "error", 2000);
+        return;
+    }
 
+    var productImgURL = await uploadImage();
+    console.log("Uploaded Image URL:", productImgURL);
+
+    
+    var status = document.querySelector(".form-check-input:checked").value;
+    var categoryID = productCategory.value.split(":")[1]; // Extract category ID
     productID = await firebase.database().ref("products").push().key;
     console.log("Generated Product ID:", productID);
 
     var productData = {
-        ID: productID,
-        "Product Name": productName,
-        description: productDescription,
-        price: parseFloat(productPrice),
-        category: productCategory,
-        stock: parseInt(productStock),
-        status: status,
-        category: category,
-        imageURL: productImgURL
+        "ID": productID,
+        "Product Title": productName.value,
+        "description": productDescription.value,
+        "price": parseFloat(productPrice.value),
+        "categoryName": productCategory.value.split(":")[0],
+        "stock": parseInt(productStock.value),
+        "status": status,
+        "categoryID": categoryID,
+        "imageURL": productImgURL
     };
 
     try {
         await firebase.database().ref("products").child(productID).set(productData);
-        toast("Product added successfully!", "success", 3000, "products.html");
+        toast("Product added successfully!", "success", 1500, "products.html");
 
-        // Reset form fields
-        document.getElementById("productForm").reset();
+        setTimeout(() => {
+            window.location.href = "products.html";
+        }, 1500);
+        
+
+        // Clear form fields if dont want to redirect to product page after adding product
+        // productName.value = "";
+        // productDescription.value = "";
+        // productPrice.value = "";
+        // productCategory.value = "";
+        // productStock.value = "";
+        // imageInput.value = "";
         return;
     }
-    catch {
+    catch (error) {
+        console.error("Error saving product data:", error);
         alert("Error saving product data. Please try again.");
         return;
     }
@@ -99,14 +119,12 @@ async function saveProduct() {
 
 
 async function uploadImage() {
-    var imageInput = document.getElementById("productImages");
+
     console.log(imageInput.files[0])
 
-    if (imageInput.files.length === 0) {
-        toast("Please select an image to upload", "error", 2000);
-        return;
-    }
-    else if (imageInput.files[0].size > 2 * 1024 * 1024) {
+    if (!imageInput.files[0]) return null;
+
+    if (imageInput.files[0].size > 2 * 1024 * 1024) {
         toast("Image size should be less than 2MB", "error", 2000);
         return;
     }
