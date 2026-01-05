@@ -57,17 +57,17 @@ function getCategories() {
             var status = categoryObj[i].checkedStatus;
 
             var activeBtnClass = "btn checkedStatus"
-            var inactiveBtnClass = "btn text-muted border checkedStatus"
+            var inactiveBtnClass = "btn text-muted checkedStatus"
 
             if (status === "active") {
                 activeBtnClass += " btn-success fw-bold"
-                inactiveBtnClass += " btn-light"
+                inactiveBtnClass += " btn-light border"
             }
             else if (status === "inactive") {
-                activeBtnClass += " btn-light"
+                activeBtnClass += " btn-light border"
                 inactiveBtnClass += " btn-danger fw-bold"
             }
-// https://placehold.co/50x50
+
             tableBody.innerHTML += `
                 <tr>
                     <td><img src="${categoryObj[i].categoryImageURL}" class="rounded" alt="" id="category-img"></td>
@@ -138,7 +138,6 @@ async function saveCategory() {
     }
     getCategories();
     console.log(categoryId);
-
 }
 
 
