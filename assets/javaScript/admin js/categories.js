@@ -30,6 +30,7 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
 }
 
 var imageURL = "";
+var imageInput = document.getElementById("image");
 var categoryName = document.getElementById("categoryName");
 var numProduct = document.getElementById("numProducts");
 var modalToggle = document.getElementById("modal-toggle");
@@ -69,13 +70,13 @@ function getCategories() {
 // https://placehold.co/50x50
             tableBody.innerHTML += `
                 <tr>
-                    <td><img src="${categoryObj[i].userProfileURL}" class="rounded" alt="" id="category-img"></td>
+                    <td><img src="${categoryObj[i].categoryImageURL}" class="rounded" alt="" id="category-img"></td>
                     <td>${categoryObj[i].categoryName}</td>
                     <td class="text-center">${categoryObj[i].numProduct}</td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="${activeBtnClass}">Active</button>
-                            <button type="button" class="${inactiveBtnClass}">Inactive</button>
+                            <button type="button" class="${activeBtnClass}" onclick="updateStatus('${categoryObj[i].ID}', 'active')">Active</button>
+                            <button type="button" class="${inactiveBtnClass}" onclick="updateStatus('${categoryObj[i].ID}', 'inactive')">Inactive</button>
                         </div>
                     </td>
                     <td class="text-end">
@@ -91,16 +92,29 @@ getCategories()
 
 
 
+function updateStatus(categoryId, status) {
+    firebase.database().ref("categories").child(categoryId).update({ checkedStatus: status });
+    getCategories();
+}
+
+
+
 // function to add a new category to firebase database
 async function saveCategory() {
     event.preventDefault();
+
+    var file = imageInput.files[0];
+    if(!file){
+        toast("Please select an image to upload", "error", 2000);
+        return null;
+    }
 
     var checkedStatus = document.querySelector(".checkedStatus:checked").value;
     categoryId = await firebase.database().ref("categories").push(categoryObj).getKey();
     console.log(categoryId);
 
-    var userProfileURL = await uploadImage();
-    if (userProfileURL == null) {
+    var categoryImageURL = await uploadImage();
+    if (categoryImageURL == null) {
         toast("Image upload failed. Please try again.", "error", 3500);
         return;
     }    
@@ -110,7 +124,7 @@ async function saveCategory() {
         numProduct: numProduct.value,
         checkedStatus: checkedStatus,
         ID: categoryId,
-        userProfileURL: userProfileURL
+        categoryImageURL: categoryImageURL
     }
     // console.log(categoryId);
 
@@ -129,8 +143,6 @@ async function saveCategory() {
 
 
 
-
-
 var modalBtn = document.getElementById("modal-btn")
 
 // function to open modal for adding/updating category
@@ -145,6 +157,7 @@ async function openModal(categoryId) {
         modalBtn.setAttribute("onclick", "saveCategory()")
         categoryName.value = "";
         numProduct.value = "";
+        imageInput.value = "";
     }
     else {
         await firebase
@@ -156,6 +169,7 @@ async function openModal(categoryId) {
                 categoryName.value = categoryObj.val().categoryName;
                 numProduct.value = categoryObj.val().numProduct;
                 var status = categoryObj.val().checkedStatus;
+                imageInput.value = "";
                 var radioButtons = document.getElementsByName("status");
 
                 for (var i = 0; i < radioButtons.length; i++) {
@@ -224,6 +238,8 @@ async function updateCategory(categoryId) {
     getCategories();
 }
 
+
+
 function cancelModal() {
     categoryName.value = "";
     numProduct.value = "";
@@ -231,7 +247,6 @@ function cancelModal() {
 
     modalToggle.checked = false;
 }
-
 
 
 
@@ -250,14 +265,11 @@ function deleteCategory(categoryId) {
 
 
 
-
 async function uploadImage() {
-    var imageInput = document.getElementById("image");
-    console.log(imageInput.files[0]);
-
-    var imageSize = imageInput.files[0].size / 1024 / 1024; // size in MB
+    var imageSize = imageInput.files[0].size / 1024 / 1024 || null; // size in MB
     // default is in byte divide to convert from byte to kb and again divide to convert from kb to mb
     
+
     if (imageSize > 2) {
         // alert("Image size should be less than 2MB");
         toast("Image size should be less than 2MB", "error", 3500);
