@@ -97,8 +97,7 @@ async function getProducts() {
                         </div>
                     </td>
                     <td class="text-end">
-                        <button class="btn btn-sm btn-outline-primary me-2"><i
-                                class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-primary me-2" onclick="addProductRedirect('${productObj[i].ID}')"><i class="bi bi-pencil"></i></button>
                         <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct('${productObj[i].ID}')"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
@@ -129,5 +128,22 @@ function deleteProduct(productId) {
             .remove();
         toast("Product deleted successfully", "success", 2000);
         getProducts();
+    }
+}
+
+
+
+
+async function addProductRedirect(productId) {
+    event.preventDefault();
+
+    var productId = productId;
+
+    if (productId) {
+        localStorage.setItem("ProductId", productId);
+        window.location.href = "add-product.html";
+    }
+    else {
+        window.location.href = "add-product.html";
     }
 }

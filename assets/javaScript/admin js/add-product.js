@@ -48,7 +48,6 @@ async function getCategories() {
         }
 
         var categoryObj = Object.values(snapshot.val() || {})
-        console.log(categoryObj)
 
         for (var i = 0; i < categoryObj.length; i++) {
             selectCategory.innerHTML += `
@@ -57,7 +56,7 @@ async function getCategories() {
         }
     })
 }
-getCategories()
+// getCategories()
 
 
 
@@ -69,10 +68,11 @@ async function saveProduct() {
         return;
     }
 
+
     var productImgURL = await uploadImage();
     console.log("Uploaded Image URL:", productImgURL);
 
-    
+
     var status = document.querySelector(".form-check-input:checked").value;
     var categoryID = productCategory.value.split(":")[1]; // Extract category ID
     productID = await firebase.database().ref("products").push().key;
@@ -95,9 +95,10 @@ async function saveProduct() {
         toast("Product added successfully!", "success", 1500, "products.html");
 
         setTimeout(() => {
+            localStorage.removeItem("ProductId");
             window.location.href = "products.html";
         }, 1500);
-        
+
 
         // Clear form fields if dont want to redirect to product page after adding product
         // productName.value = "";
@@ -122,12 +123,20 @@ async function uploadImage() {
 
     console.log(imageInput.files[0])
 
-    if (!imageInput.files[0]) return null;
+    var file = imageInput.files[0];
 
-    if (imageInput.files[0].size > 2 * 1024 * 1024) {
-        toast("Image size should be less than 2MB", "error", 2000);
-        return;
+    if(!file){
+        return null;
     }
+
+    if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+            toast("Image size should be less than 2MB", "error", 2000);
+            return;
+        }
+    }
+
+
 
     const formdata = new FormData();
     formdata.append("file", imageInput.files[0]);
@@ -156,3 +165,113 @@ async function uploadImage() {
 
     return imageURL;
 }
+
+
+
+
+
+var pageTitle = document.getElementById("pageTitle");
+var saveBtn = document.getElementById("saveBtn");
+
+async function addProductRedirect() {
+    // event.preventDefault();
+
+    productID = localStorage.getItem("ProductId");
+    await getCategories();
+
+
+
+
+    if (productID === null) {
+        pageTitle.innerText = "Add Product";
+        saveBtn.innerText = " Save Product";
+        saveBtn.setAttribute("onclick", "saveProduct()");
+
+        productName.value = "";
+        productDescription.value = "";
+        productPrice.value = "";
+        productCategory.value = "";
+        productStock.value = "";
+        imageURL = "";
+        selectCategory.value = "";
+
+        document.getElementById("available").checked = true;
+
+    } else {
+        await firebase
+            .database()
+            .ref("products")
+            .child(productID)
+            .get()
+            .then((snapProduct) => {
+
+                pageTitle.innerText = "Update Product";
+                saveBtn.innerText = " Update Product";
+                saveBtn.setAttribute("onclick", "updateProduct()");
+
+                productName.value = snapProduct.val()["Product Title"];
+                productDescription.value = snapProduct.val().description;
+                productPrice.value = snapProduct.val().price;
+                productCategory.value = snapProduct.val().categoryName;
+                productStock.value = snapProduct.val().stock;
+                imageURL = snapProduct.val().imageURL;
+                selectCategory.value = `${snapProduct.val().categoryName}:${snapProduct.val().categoryID}`;
+
+                var status = snapProduct.val().status;
+                
+
+                if (status === "Available") {
+                    document.getElementById("available").checked = true;
+                }
+                else if (status === "Out of Stock") {
+                    document.getElementById("outOfStock").checked = true;
+                }
+            })
+    }
+}
+addProductRedirect();
+
+
+async function updateProduct() {
+    event.preventDefault();
+
+    var productImgURL = await uploadImage();
+    // if (productImgURL == null) {
+    //     toast("Image upload failed. Please try again.", "error", 3500);
+    //     return;
+    // }
+
+    var checkedStatus = document.querySelector(".checkedStatus:checked").value;
+    var productID = localStorage.getItem("ProductId");
+
+    if (productImgURL === null || productImgURL === "" || productImgURL === undefined) {
+        productImgURL = imageURL;
+    }
+
+    var productObj = {
+        "ID": productID,
+        "Product Title": productName.value,
+        "description": productDescription.value,
+        "price": productPrice.value,
+        "categoryName": productCategory.value.split(":")[0],
+        "categoryId": productCategory.value.split(":")[1],
+        "stock": productStock.value,
+        // "imageURL": productImgURL,
+        "status": checkedStatus
+    };
+
+    console.log(productImgURL);
+    
+    if (productImgURL) {
+        productObj.imageURL = productImgURL;
+    }
+
+    firebase.database().ref("products").child(productID).update(productObj);
+    toast("Product updated successfully", "success", 1500);
+    localStorage.removeItem("ProductId");
+    setTimeout(() => {
+        window.location.href = "products.html";
+    }, 1500);
+}
+
+

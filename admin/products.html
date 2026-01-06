@@ -64,12 +64,12 @@
                 <div class="d-flex gap-2">
                     <input type="text" class="form-control form-control-sm" placeholder="Search products...">
                     <select class="form-select form-select-sm" style="width: 150px;" id="select-category">
-                        <option value="">All Categories</option>
+                        <option value="" selected>All Categories</option>
                         <!-- <option value="electronics">Electronics</option>
                         <option value="clothing">Clothing</option> -->
                     </select>
                 </div>
-                <a href="add-product.html" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i> Add
+                <a href="#" class="btn btn-primary btn-sm" onclick="addProductRedirect()"><i class="bi bi-plus-lg me-1"></i> Add
                     Product</a>
             </div>
             <div class="card-body">
@@ -176,6 +176,7 @@
     <!-- toastify javascript CDN -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="../assets/javaScript/admin js/product.js"></script>
+    <!-- <script src="../assets/javaScript/admin js/add-product.js"></script> -->
 </body>
 
 </html>

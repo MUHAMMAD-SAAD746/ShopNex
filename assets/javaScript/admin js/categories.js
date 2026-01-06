@@ -67,7 +67,7 @@ function getCategories() {
                 activeBtnClass += " btn-light border"
                 inactiveBtnClass += " btn-danger fw-bold"
             }
-
+            console.log(categoryObj[i].categoryImageURL);
             tableBody.innerHTML += `
                 <tr>
                     <td><img src="${categoryObj[i].categoryImageURL}" class="rounded" alt="" id="category-img"></td>
@@ -204,18 +204,25 @@ async function updateCategory(categoryId) {
     var checkedStatus = document.querySelector(".checkedStatus:checked").value;
     categoryId = categoryId || null;
 
-    var userProfileURL = await uploadImage();
-    if (userProfileURL == null) {
-        toast("Image upload failed. Please try again.", "error", 3500);
-        return;
-    }   
+    var categoryImageURL = await uploadImage();
+    // if (categoryImageURL == null) {
+    //     toast("Image upload failed. Please try again.", "error", 3500);
+    //     return;
+    // }   
 
     var categoryObj = {
         categoryName: categoryName.value,
         numProduct: numProduct.value,
         checkedStatus: checkedStatus,
         ID: categoryId,
-        userProfileURL: userProfileURL
+        // categoryImageURL: categoryImageURL
+    }
+
+    if(categoryImageURL === null || categoryImageURL === "" || categoryImageURL === undefined){
+        categoryObj.categoryImageURL = imageURL;
+    }
+    else{
+        categoryObj.categoryImageURL = categoryImageURL;
     }
     // console.log(categoryId);
 
@@ -265,6 +272,12 @@ function deleteCategory(categoryId) {
 
 
 async function uploadImage() {
+
+    var file = imageInput.files[0];
+
+    if(!file){
+        return null;
+    }
     var imageSize = imageInput.files[0].size / 1024 / 1024 || null; // size in MB
     // default is in byte divide to convert from byte to kb and again divide to convert from kb to mb
     
