@@ -81,7 +81,7 @@ function signUp() {
                 }
 
                 await firebase.database().ref("Users").child(user.uid).set(userData);
-                window.location.href = "../../../admin/login.html"
+                window.location.href = "../admin/dashboard.html"
             })
             .catch((error) => {
                 var errorCode = error.code;

@@ -33,7 +33,6 @@ var productBody = document.getElementById("productBody")
 async function getCategories() {
     await firebase.database().ref("categories").get().then((snapshot) => {
 
-        console.log(snapshot.val())
 
         if (!snapshot.exists()) {
             console.log("no category found")
@@ -103,7 +102,6 @@ async function getProducts() {
                 </tr>
             `
         }
-        console.log(snapshot.val())
     })
 }
 getProducts()
