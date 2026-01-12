@@ -29,6 +29,25 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
     }).showToast();
 }
 
+async function adminData(){
+    var profileImg = document.getElementById("profileImg");
+    var userId = localStorage.getItem("userId");
+    var adminName = document.getElementById("adminName");
+    
+    await firebase.database().ref("Users").child(userId).get().then((snapshot)=>{
+        var userObj = snapshot.val();
+        adminName.textContent = userObj.userName;
+
+        if(userObj.profilePicUrl=="" || userObj.profilePicUrl==null || userObj.profilePicUrl==undefined){
+            profileImg.src = "https://placehold.co/40x40";
+            return;
+        }
+        profileImg.src = userObj.profilePicUrl;
+        
+    })
+}
+adminData()
+
 var imageURL = "";
 var imageInput = document.getElementById("image");
 var categoryName = document.getElementById("categoryName");
@@ -67,7 +86,6 @@ function getCategories() {
                 activeBtnClass += " btn-light border"
                 inactiveBtnClass += " btn-danger fw-bold"
             }
-            console.log(categoryObj[i].categoryImageURL);
             tableBody.innerHTML += `
                 <tr>
                     <td><img src="${categoryObj[i].categoryImageURL}" class="rounded" alt="" id="category-img"></td>
@@ -126,7 +144,6 @@ async function saveCategory() {
         ID: categoryId,
         categoryImageURL: categoryImageURL
     }
-    // console.log(categoryId);
 
     try {
         await firebase.database().ref("categories").child(categoryId).set(categoryObj);

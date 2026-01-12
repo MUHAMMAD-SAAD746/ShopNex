@@ -27,6 +27,26 @@ function logOut() {
     redirect();
 }
 
+
+async function adminData(){
+    var profileImg = document.getElementById("profileImg");
+    var userId = localStorage.getItem("userId");
+    var adminName = document.getElementById("adminName");
+    
+    await firebase.database().ref("Users").child(userId).get().then((snapshot)=>{
+        var userObj = snapshot.val();
+        adminName.textContent = userObj.userName;
+
+        if(userObj.profilePicUrl=="" || userObj.profilePicUrl==null || userObj.profilePicUrl==undefined){
+            profileImg.src = "https://placehold.co/40x40";
+            return;
+        }
+        profileImg.src = userObj.profilePicUrl;
+        
+    })
+}
+adminData()
+
 var selectCategory = document.getElementById("select-category")
 var productBody = document.getElementById("productBody")
 

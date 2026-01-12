@@ -49,8 +49,8 @@
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Dashboard</span>
                 <div class="d-flex align-items-center">
-                    <span class="me-3">Hello, <strong>Admin</strong></span>
-                    <img src="https://placehold.co/40x40" class="rounded-circle" alt="Admin">
+                    <span class="me-3">Hello, <strong id="adminName">Admin...</strong></span>
+                    <img src="https://placehold.co/40x40" class="rounded-circle" alt="Admin" id="profileImg" height="50" width="50">
                 </div>
             </div>
         </nav>
@@ -73,7 +73,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="mb-0 opacity-75">Total Products</p>
-                            <h3 class="fw-bold" id="totalProduct">Loading...</h3>
+                            <h3 class="fw-bold" id="totalProduct"><div class="loader-spinner ld-primary"></div></h3>
                         </div>
                         <i class="bi bi-box-seam fs-1 opacity-50"></i>
                     </div>
@@ -95,7 +95,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <p class="mb-0 opacity-75">Categories</p>
-                            <h3 class="fw-bold" id="totalCategories">Loading...</h3>
+                            <h3 class="fw-bold" id="totalCategories"><div class="loader-spinner ld-info"></h3>
                         </div>
                         <i class="bi bi-tags-fill fs-1 opacity-50"></i>
                     </div>

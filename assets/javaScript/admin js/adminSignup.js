@@ -2,6 +2,8 @@ var userName = document.getElementById("name");
 var email = document.getElementById("email")
 var password = document.getElementById("password")
 var confirmPassword = document.getElementById("confirm-password")
+var profilePic = document.getElementById("profile-pic");
+var imageURl = "";
 
 function toast(msg, className = "error", duration = 2000, destination = null) {
     Toastify({
@@ -69,19 +71,23 @@ function signUp() {
     if (isValid) {
         toast("SignUp successful", "success")
         firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
-            .then(async(userCredential) => {
+            .then(async (userCredential) => {
                 var user = userCredential.user;
                 console.log(user);
-                
+                var profilePicUrl = await uploadProfilePic();
+
+
 
                 var userData = {
-                    userName : userName.value, 
-                    email : email.value, 
-                    password : password.value
+                    userName: userName.value,
+                    email: email.value,
+                    password: password.value,
+                    userId: user.uid,
+                    profilePicUrl
                 }
 
                 await firebase.database().ref("Users").child(user.uid).set(userData);
-                window.location.href = "../admin/dashboard.html"
+                window.location.href = "../admin/login.html"
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -90,6 +96,45 @@ function signUp() {
                 // ..
             });
     }
-
 }
+
+async function uploadProfilePic() {
+    event.preventDefault();
+    var image = profilePic.files[0];
+
+    if (image == null) {
+        return null;
+    }
+
+    if (image.size > 2 * 1024 * 1024) {
+        toast("Image size should be less than 2MB", "error", 3500);
+        return null;
+    }
+
+    const formdata = new FormData();
+    formdata.append("file", profilePic.files[0]);
+    formdata.append("upload_preset", "ShopNex-Category");
+    formdata.append("folder", "ShopNex profile pics");
+
+    const requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow"
+    };
+
+
+    await fetch("https://api.cloudinary.com/v1_1/dn7oklgm7/image/upload", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            imageURl = result.secure_url;
+            return imageURl;
+        })
+        .catch((error) => {
+            console.error(error)
+            return null;
+        });
+
+        return imageURl;
+}
+
 

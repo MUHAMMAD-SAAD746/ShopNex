@@ -52,8 +52,8 @@
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Categories</span>
                 <div class="d-flex align-items-center">
-                    <span class="me-3">Hello, <strong>Admin</strong></span>
-                    <img src="https://placehold.co/40x40" class="rounded-circle" alt="Admin">
+                    <span class="me-3">Hello, <strong id="adminName">Admin...</strong></span>
+                    <img src="https://placehold.co/40x40" class="rounded-circle" alt="Admin" id="profileImg" height="50" width="50">
                 </div>
             </div>
         </nav>
@@ -79,7 +79,8 @@
                         </thead>
                         <tbody id="tableBody">
                             <tr>
-                                <td colspan="5" style="text-align: center;">Loading .....</td>
+                                <!-- <td colspan="5" style="text-align: center;">Loading .....</td> -->
+                                <td colspan="5" style="text-align: center;"><div class="loader-loading"></div></td>
                             </tr>
                             <!-- <tr>
                                 <td><img src="https://placehold.co/50x50" class="rounded" alt="Electronics"></td>
@@ -177,7 +178,7 @@
                                 <!-- </div> -->
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end">
-                                <img src="https://via.placeholder.com/150" id="preview-img" alt="Preview"
+                                <img src="" id="preview-img" alt="Preview"
                                     class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
                             </div>
                         </div>
