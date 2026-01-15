@@ -29,21 +29,21 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
     }).showToast();
 }
 
-async function adminData(){
+async function adminData() {
     var profileImg = document.getElementById("profileImg");
     var userId = localStorage.getItem("userId");
     var adminName = document.getElementById("adminName");
-    
-    await firebase.database().ref("Users").child(userId).get().then((snapshot)=>{
+
+    await firebase.database().ref("Admins").child(userId).get().then((snapshot) => {
         var userObj = snapshot.val();
         adminName.textContent = userObj.userName;
 
-        if(userObj.profilePicUrl=="" || userObj.profilePicUrl==null || userObj.profilePicUrl==undefined){
+        if (userObj.profilePicUrl == "" || userObj.profilePicUrl == null || userObj.profilePicUrl == undefined) {
             profileImg.src = "https://placehold.co/40x40";
             return;
         }
         profileImg.src = userObj.profilePicUrl;
-        
+
     })
 }
 adminData()
@@ -122,7 +122,7 @@ async function saveCategory() {
     event.preventDefault();
 
     var file = imageInput.files[0];
-    if(!file){
+    if (!file) {
         toast("Please select an image to upload", "error", 2000);
         return null;
     }
@@ -135,7 +135,7 @@ async function saveCategory() {
     if (categoryImageURL == null) {
         toast("Image upload failed. Please try again.", "error", 3500);
         return;
-    }    
+    }
 
     var categoryObj = {
         categoryName: categoryName.value,
@@ -235,10 +235,10 @@ async function updateCategory(categoryId) {
         // categoryImageURL: categoryImageURL
     }
 
-    if(categoryImageURL === null || categoryImageURL === "" || categoryImageURL === undefined){
+    if (categoryImageURL === null || categoryImageURL === "" || categoryImageURL === undefined) {
         categoryObj.categoryImageURL = imageURL;
     }
-    else{
+    else {
         categoryObj.categoryImageURL = categoryImageURL;
     }
     // console.log(categoryId);
@@ -292,12 +292,12 @@ async function uploadImage() {
 
     var file = imageInput.files[0];
 
-    if(!file){
+    if (!file) {
         return null;
     }
     var imageSize = imageInput.files[0].size / 1024 / 1024 || null; // size in MB
     // default is in byte divide to convert from byte to kb and again divide to convert from kb to mb
-    
+
 
     if (imageSize > 2) {
         // alert("Image size should be less than 2MB");
@@ -322,9 +322,10 @@ async function uploadImage() {
             imageURL = result["secure_url"];
             return imageURL;
         })
-        .catch((error) => {console.error(error)
+        .catch((error) => {
+            console.error(error)
             return null
         });
 
-        return imageURL;
+    return imageURL;
 }

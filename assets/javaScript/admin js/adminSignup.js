@@ -3,6 +3,9 @@ var email = document.getElementById("email")
 var password = document.getElementById("password")
 var confirmPassword = document.getElementById("confirm-password")
 var profilePic = document.getElementById("profile-pic");
+var role = document.getElementById("role");
+var adminKey = document.getElementById("admin-key");
+var accessKey = "ADMIN123KEY";
 var imageURl = "";
 
 function toast(msg, className = "error", duration = 2000, destination = null) {
@@ -67,9 +70,25 @@ function signUp() {
         return
     }
 
+    if (role.value == "") {
+        toast("Role is required")
+        isValid = false;
+        return
+    }
+    if (adminKey.value.trim() == "") {
+        toast("Admin Key is required")
+        isValid = false;
+        return
+    }
+    if (adminKey.value.trim() !== accessKey) {
+        toast("Invalid Admin Key")
+        isValid = false;
+        return
+    }
+
+
 
     if (isValid) {
-        toast("SignUp successful", "success")
         firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
             .then(async (userCredential) => {
                 var user = userCredential.user;
@@ -82,18 +101,22 @@ function signUp() {
                     userName: userName.value,
                     email: email.value,
                     password: password.value,
+                    role: role.value,
                     userId: user.uid,
-                    profilePicUrl
+                    profilePicUrl: profilePicUrl ? profilePicUrl : "https://res.cloudinary.com/dn7oklgm7/image/upload/v1768411995/ShopNex%20Default/pxwdjlfp4alwmgxybka2.png"
                 }
 
-                await firebase.database().ref("Users").child(user.uid).set(userData);
-                window.location.href = "../admin/login.html"
+                await firebase.database().ref("Admins").child(user.uid).set(userData);
+                toast("SignUp successful", "success", 1000);
+                setTimeout(() => {
+                    window.location.href = "../admin/login.html"
+                }, 1100);
+
             })
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                alert("Error code : " + errorCode + errorMessage)
-                // ..
+                toast("Error: " + errorMessage + errorCode, "error", 4000);
             });
     }
 }
@@ -115,7 +138,7 @@ async function uploadProfilePic() {
     formdata.append("file", profilePic.files[0]);
     formdata.append("upload_preset", "ShopNex-Category");
     formdata.append("folder", "ShopNex profile pics");
-
+    
     const requestOptions = {
         method: "POST",
         body: formdata,
@@ -134,7 +157,7 @@ async function uploadProfilePic() {
             return null;
         });
 
-        return imageURl;
+    return imageURl;
 }
 
 

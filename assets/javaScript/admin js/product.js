@@ -28,21 +28,21 @@ function logOut() {
 }
 
 
-async function adminData(){
+async function adminData() {
     var profileImg = document.getElementById("profileImg");
     var userId = localStorage.getItem("userId");
     var adminName = document.getElementById("adminName");
-    
-    await firebase.database().ref("Users").child(userId).get().then((snapshot)=>{
+
+    await firebase.database().ref("Admins").child(userId).get().then((snapshot) => {
         var userObj = snapshot.val();
         adminName.textContent = userObj.userName;
 
-        if(userObj.profilePicUrl=="" || userObj.profilePicUrl==null || userObj.profilePicUrl==undefined){
+        if (userObj.profilePicUrl == "" || userObj.profilePicUrl == null || userObj.profilePicUrl == undefined) {
             profileImg.src = "https://placehold.co/40x40";
             return;
         }
         profileImg.src = userObj.profilePicUrl;
-        
+
     })
 }
 adminData()
@@ -87,16 +87,16 @@ async function getProducts() {
         }
 
         for (var i = 0; i < productObj.length; i++) {
-            var status = productObj[i].status;            
+            var status = productObj[i].status;
 
             var availableBtn = "btn checkedStatus"
             var outOfStockBtn = "btn checkedStatus"
 
-            if(status === "Available"){
+            if (status === "Available") {
                 availableBtn += " btn-success border fw-bold"
                 outOfStockBtn += " btn text-muted btn-light border"
             }
-            else if (status === "Out of Stock"){
+            else if (status === "Out of Stock") {
                 availableBtn += " btn text-muted btn-light border"
                 outOfStockBtn += " btn-danger fw-bold"
             }
@@ -130,7 +130,7 @@ getProducts()
 
 
 function updateStatus(productId, status) {
-    firebase.database().ref("products").child(productId).update({status: status});
+    firebase.database().ref("products").child(productId).update({ status: status });
     getProducts();
 }
 
