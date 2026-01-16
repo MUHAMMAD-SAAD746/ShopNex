@@ -114,6 +114,7 @@ async function getProducts() {
                     <td>${productObj[i].categoryName}</td>
                     <td>$${productObj[i].price}</td>
                     <td>${productObj[i].stock}</td>
+                    <td>${productObj[i].discount}%</td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm" role="group">
                             <button type="button" class="${availableBtn}" onclick="updateStatus('${productObj[i].ID}', 'Available')">Available</button>

@@ -36,6 +36,7 @@ var productDescription = document.getElementById("productDescription");
 var productPrice = document.getElementById("productPrice");
 var productStock = document.getElementById("productStock");
 var featureProduct = document.getElementById("featureProduct")
+var discount = document.getElementById("discount")
 
 
 async function getCategories() {
@@ -89,7 +90,8 @@ async function saveProduct() {
         "status": status,
         "categoryID": categoryID,
         "imageURL": productImgURL,
-        "Feature Product": featureProduct.checked
+        "Feature Product": featureProduct.checked,
+        "discount": discount.value?discount.value:0
     };
 
     try {
@@ -219,6 +221,7 @@ async function addProductRedirect() {
                 productDescription.value = snapProduct.val().description;
                 productPrice.value = snapProduct.val().price;
                 productStock.value = snapProduct.val().stock;
+                discount.value = snapProduct.val().discount;                
                 imageURL = snapProduct.val().imageURL;
 
                 selectCategory.value =
@@ -267,7 +270,8 @@ async function updateProduct() {
         "stock": productStock.value,
         // "imageURL": productImgURL,
         "status": checkedStatus,
-        "Feature Product": featureProduct.checked
+        "Feature Product": featureProduct.checked,
+        "discount": discount.value?discount.value:0
     };
 
     console.log(productImgURL);

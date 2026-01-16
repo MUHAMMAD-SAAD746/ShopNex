@@ -111,18 +111,20 @@
                         </div>
 
                         <!-- Status -->
-                        <div class="col-12">
-                            <label class="form-label d-block">Status</label>
+                        <div class="col-12 my-3">
                             <div class="d-flex align-items-center">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input checkedStatus" type="radio" name="productStatus"
-                                        id="available" value="Available" checked>
-                                    <label class="form-check-label" for="available">Available</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input checkedStatus" type="radio" name="productStatus"
-                                        id="outOfStock" value="Out of Stock">
-                                    <label class="form-check-label" for="outOfStock">Out of Stock</label>
+                                <div>
+                                    <label class="form-label d-block">Status</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkedStatus" type="radio" name="productStatus"
+                                            id="available" value="Available" checked>
+                                        <label class="form-check-label" for="available">Available</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input checkedStatus" type="radio" name="productStatus"
+                                            id="outOfStock" value="Out of Stock">
+                                        <label class="form-check-label" for="outOfStock">Out of Stock</label>
+                                    </div>
                                 </div>
 
                                 <div class="vr mx-5"></div>
@@ -131,6 +133,16 @@
                                     <input class="form-check-input" type="checkbox" id="featureProduct"
                                         value="Featured">
                                     <label class="form-check-label" for="featureProduct">Feature Product</label>
+                                </div>
+
+                                <div class="vr mx-5"></div>
+
+                                <div>
+                                    <label class="form-label d-block">Discount</label>
+                                    <div class="input-group" style="width: 150px;">
+                                        <input type="number" class="form-control" value="0" min="0" max="100" id="discount">
+                                        <span class="input-group-text">%</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
