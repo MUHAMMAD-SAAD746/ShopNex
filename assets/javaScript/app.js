@@ -64,6 +64,8 @@ async function getcategories(){
             return
         }
 
+        categoryContainer.innerHTML = ""
+        
         for(var i = 0 ; i < categoryObj.length ; i++){
             selectCategory.innerHTML += 
                 `<option value="${categoryObj[i].categoryName}">${categoryObj[i].categoryName}</option>`

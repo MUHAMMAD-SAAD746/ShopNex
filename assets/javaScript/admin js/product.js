@@ -74,6 +74,7 @@ getCategories()
 async function getProducts() {
     await firebase.database().ref("products").get().then((snapshot) => {
         var productObj = Object.values(snapshot.val() || {})
+        console.log(productObj)
 
         productBody.innerHTML = ""
 
@@ -87,6 +88,7 @@ async function getProducts() {
         }
 
         for (var i = 0; i < productObj.length; i++) {
+
             var status = productObj[i].status;
 
             var availableBtn = "btn checkedStatus"
@@ -101,7 +103,10 @@ async function getProducts() {
                 outOfStockBtn += " btn-danger fw-bold"
             }
 
-
+                            // featuredBtn.classList.add("btn-success");
+            
+            var featured = productObj[i]["Feature Product"]
+            console.log(featured)
             productBody.innerHTML += `
                 <tr>
                     <td><img src="${productObj[i].imageURL}" id="category-img" class="rounded" alt="Product"></td>
@@ -116,11 +121,23 @@ async function getProducts() {
                         </div>
                     </td>
                     <td class="text-end">
-                        <button class="btn btn-sm btn-outline-primary me-2" onclick="addProductRedirect('${productObj[i].ID}')"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-sm btn-outline-success me-1 featured-btn" onclick="featureProduct('${productObj[i].ID}',${!featured})"><i class="bi bi-award"></i></button>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="addProductRedirect('${productObj[i].ID}')"><i class="bi bi-pencil"></i></button>
                         <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct('${productObj[i].ID}')"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             `
+
+            
+            var featuredBtns = document.getElementsByClassName("featured-btn")
+
+            if(featured){
+                featuredBtns[i].classList.remove("btn-outline-success");
+                featuredBtns[i].classList.add("btn-success","text-white")
+            }
+            else{
+                featuredBtns[i].classList.remove("btn-success","text-white")
+            }
         }
     })
 }
@@ -155,6 +172,8 @@ function deleteProduct(productId) {
 async function addProductRedirect(productId) {
     event.preventDefault();
 
+    localStorage.removeItem("ProductId")
+    
     var productId = productId;
 
     if (productId) {
@@ -164,4 +183,12 @@ async function addProductRedirect(productId) {
     else {
         window.location.href = "add-product.html";
     }
+}
+
+
+
+function featureProduct(productId, featureStatus) {
+    
+    firebase.database().ref("products").child(productId).update({ "Feature Product": featureStatus });
+    getProducts();
 }

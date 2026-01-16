@@ -28,14 +28,14 @@ function logOut() {
 }
 
 var selectCategory = document.getElementById("select-category")
-var productID = null
+// var productID = null
 var imageURL = "";
 var imageInput = document.getElementById("productImages");
 var productName = document.getElementById("productTitle");
 var productDescription = document.getElementById("productDescription");
 var productPrice = document.getElementById("productPrice");
-var productCategory = document.getElementById("select-category");
 var productStock = document.getElementById("productStock");
+var featureProduct = document.getElementById("featureProduct")
 
 
 async function getCategories() {
@@ -51,8 +51,9 @@ async function getCategories() {
 
         for (var i = 0; i < categoryObj.length; i++) {
             selectCategory.innerHTML += `
-                <option value="${categoryObj[i].categoryName} :${categoryObj[i].ID}">${categoryObj[i].categoryName}</option>
+                <option value="${categoryObj[i].categoryName}:${categoryObj[i].ID}">${categoryObj[i].categoryName}</option>
             `
+            console.log(`${categoryObj[i].categoryName}:${categoryObj[i].ID}`)
         }
     })
 }
@@ -74,8 +75,8 @@ async function saveProduct() {
 
 
     var status = document.querySelector(".form-check-input:checked").value;
-    var categoryID = productCategory.value.split(":")[1]; // Extract category ID
-    productID = await firebase.database().ref("products").push().key;
+    var categoryID = selectCategory.value.split(":")[1]; // Extract category ID
+    var productID = await firebase.database().ref("products").push().key;
     console.log("Generated Product ID:", productID);
 
     var productData = {
@@ -83,11 +84,12 @@ async function saveProduct() {
         "Product Title": productName.value,
         "description": productDescription.value,
         "price": parseFloat(productPrice.value),
-        "categoryName": productCategory.value.split(":")[0],
+        "categoryName": selectCategory.value.split(":")[0].trim(),
         "stock": parseInt(productStock.value),
         "status": status,
         "categoryID": categoryID,
-        "imageURL": productImgURL
+        "imageURL": productImgURL,
+        "Feature Product": featureProduct.checked
     };
 
     try {
@@ -104,7 +106,7 @@ async function saveProduct() {
         // productName.value = "";
         // productDescription.value = "";
         // productPrice.value = "";
-        // productCategory.value = "";
+        // selectCategory.value = "";
         // productStock.value = "";
         // imageInput.value = "";
         return;
@@ -125,7 +127,7 @@ async function uploadImage() {
 
     var file = imageInput.files[0];
 
-    if(!file){
+    if (!file) {
         return null;
     }
 
@@ -176,7 +178,7 @@ var saveBtn = document.getElementById("saveBtn");
 async function addProductRedirect() {
     // event.preventDefault();
 
-    productID = localStorage.getItem("ProductId");
+    var productID = localStorage.getItem("ProductId");
     await getCategories();
 
 
@@ -190,10 +192,9 @@ async function addProductRedirect() {
         productName.value = "";
         productDescription.value = "";
         productPrice.value = "";
-        productCategory.value = "";
+        selectCategory.value = "";
         productStock.value = "";
         imageURL = "";
-        selectCategory.value = "";
 
         document.getElementById("available").checked = true;
 
@@ -204,6 +205,11 @@ async function addProductRedirect() {
             .child(productID)
             .get()
             .then((snapProduct) => {
+                var productObj = (snapProduct.val())
+                console.log(productObj)
+                console.log(productObj.categoryID)
+                console.log(productObj.categoryName)
+                console.log(`${productObj.categoryName}:${productObj.categoryID}`)
 
                 pageTitle.innerText = "Update Product";
                 saveBtn.innerText = " Update Product";
@@ -212,13 +218,16 @@ async function addProductRedirect() {
                 productName.value = snapProduct.val()["Product Title"];
                 productDescription.value = snapProduct.val().description;
                 productPrice.value = snapProduct.val().price;
-                productCategory.value = snapProduct.val().categoryName;
                 productStock.value = snapProduct.val().stock;
                 imageURL = snapProduct.val().imageURL;
-                selectCategory.value = `${snapProduct.val().categoryName}:${snapProduct.val().categoryID}`;
+
+                selectCategory.value =
+                    `${productObj.categoryName}:${productObj.categoryID}`;
+
+
 
                 var status = snapProduct.val().status;
-                
+
 
                 if (status === "Available") {
                     document.getElementById("available").checked = true;
@@ -253,15 +262,16 @@ async function updateProduct() {
         "Product Title": productName.value,
         "description": productDescription.value,
         "price": productPrice.value,
-        "categoryName": productCategory.value.split(":")[0],
-        "categoryId": productCategory.value.split(":")[1],
+        "categoryName": selectCategory.value.split(":")[0],
+        "categoryID": selectCategory.value.split(":")[1],
         "stock": productStock.value,
         // "imageURL": productImgURL,
-        "status": checkedStatus
+        "status": checkedStatus,
+        "Feature Product": featureProduct.checked
     };
 
     console.log(productImgURL);
-    
+
     if (productImgURL) {
         productObj.imageURL = productImgURL;
     }
