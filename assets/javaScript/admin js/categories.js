@@ -29,6 +29,34 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
     }).showToast();
 }
 
+
+
+
+var imageURL = "";
+var imageInput = document.getElementById("image");
+var previewPic = document.getElementById("preview-img")
+var categoryName = document.getElementById("categoryName");
+var numProduct = document.getElementById("numProducts");
+var modalToggle = document.getElementById("modal-toggle");
+var categoryId = null;
+
+
+
+
+imageInput.addEventListener("change", () => {
+    console.log(imageInput.files[0])
+
+    if (imageInput.files.length > 0){
+        previewPic.src = URL.createObjectURL(imageInput.files[0])
+    }
+    else{
+        previewPic.src = "https://placehold.co/80x80?text=profile"
+    }
+})
+
+
+
+
 async function adminData() {
     var profileImg = document.getElementById("profileImg");
     var userId = localStorage.getItem("userId");
@@ -48,12 +76,7 @@ async function adminData() {
 }
 adminData()
 
-var imageURL = "";
-var imageInput = document.getElementById("image");
-var categoryName = document.getElementById("categoryName");
-var numProduct = document.getElementById("numProducts");
-var modalToggle = document.getElementById("modal-toggle");
-var categoryId = null;
+
 
 
 // function to get categories from firebase database and display in table
@@ -174,6 +197,7 @@ async function openModal(categoryId) {
         categoryName.value = "";
         numProduct.value = "";
         imageInput.value = "";
+        previewPic.src = "https://placehold.co/80x80?text=profile"
     }
     else {
         await firebase
@@ -185,6 +209,7 @@ async function openModal(categoryId) {
                 categoryName.value = categoryObj.val().categoryName;
                 numProduct.value = categoryObj.val().numProduct;
                 var status = categoryObj.val().checkedStatus;
+                previewPic.src = categoryObj.val().categoryImageURL,
                 imageInput.value = "";
                 var radioButtons = document.getElementsByName("status");
 

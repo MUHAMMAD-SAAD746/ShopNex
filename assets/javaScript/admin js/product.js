@@ -110,7 +110,7 @@ async function getProducts() {
             productBody.innerHTML += `
                 <tr>
                     <td><img src="${productObj[i].imageURL}" id="category-img" class="rounded" alt="Product"></td>
-                    <td>${productObj[i]["Product Title"]}</td>
+                    <td style="max-width : 200px;">${productObj[i]["Product Title"]}</td>
                     <td>${productObj[i].categoryName}</td>
                     <td>$${productObj[i].price}</td>
                     <td>${productObj[i].stock}</td>

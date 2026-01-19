@@ -31,6 +31,7 @@ var selectCategory = document.getElementById("select-category")
 // var productID = null
 var imageURL = "";
 var imageInput = document.getElementById("productImages");
+var previewPic = document.getElementById("previewPic");
 var productName = document.getElementById("productTitle");
 var productDescription = document.getElementById("productDescription");
 var productPrice = document.getElementById("productPrice");
@@ -59,6 +60,18 @@ async function getCategories() {
     })
 }
 // getCategories()
+
+
+imageInput.addEventListener("change", () => {
+    console.log(imageInput.files[0])
+
+    if (imageInput.files.length > 0){
+        previewPic.src = URL.createObjectURL(imageInput.files[0])
+    }
+    else{
+        previewPic.src = "https://placehold.co/80x80?text=profile"
+    }
+})
 
 
 
@@ -221,7 +234,8 @@ async function addProductRedirect() {
                 productDescription.value = snapProduct.val().description;
                 productPrice.value = snapProduct.val().price;
                 productStock.value = snapProduct.val().stock;
-                discount.value = snapProduct.val().discount;                
+                discount.value = snapProduct.val().discount;    
+                previewPic.src = snapProduct.val().imageURL            
                 imageURL = snapProduct.val().imageURL;
 
                 selectCategory.value =

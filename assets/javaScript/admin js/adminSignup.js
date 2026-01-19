@@ -3,6 +3,7 @@ var email = document.getElementById("email")
 var password = document.getElementById("password")
 var confirmPassword = document.getElementById("confirm-password")
 var profilePic = document.getElementById("profile-pic");
+var previewPic = document.getElementById("preview-img")
 var role = document.getElementById("role");
 var adminKey = document.getElementById("admin-key");
 var accessKey = "ADMIN123KEY";
@@ -22,6 +23,21 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
         onClick: function () { } // Callback after click
     }).showToast();
 }
+
+
+
+profilePic.addEventListener("change", () => {
+    console.log(profilePic.files[0])
+
+    if (profilePic.files.length > 0){
+        previewPic.src = URL.createObjectURL(profilePic.files[0])
+    }
+    else{
+        previewPic.src = "https://placehold.co/80x80?text=profile"
+    }
+})
+
+
 
 function signUp() {
     event.preventDefault();
@@ -138,7 +154,7 @@ async function uploadProfilePic() {
     formdata.append("file", profilePic.files[0]);
     formdata.append("upload_preset", "ShopNex-Category");
     formdata.append("folder", "ShopNex profile pics");
-    
+
     const requestOptions = {
         method: "POST",
         body: formdata,
