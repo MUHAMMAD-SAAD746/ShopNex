@@ -83,7 +83,7 @@ function getSelectedProducts() {
                                     height="60" width="60" alt="Product">
                                 <div>
                                     <a href="product-detail.html"
-                                        class="text-decoration-none text-dark fw-bold">${productObj[j]["Product Title"]}</a>
+                                        class="text-decoration-none text-dark fw-bold product-title">${productObj[j]["Product Title"]}</a>
                                     <small class="d-block text-muted">Color: Black</small>
                                 </div>
                             </div>
@@ -106,7 +106,8 @@ function getSelectedProducts() {
                 var productTotal = document.getElementsByClassName("product-total")
                 var price = parseFloat(productTotal[i].innerText.replace("$", ""));
                 cartObj[i].totalAmount = price;
-
+                var productTitle = document.getElementsByClassName("product-title")
+                cartObj[i].productTitle = productTitle[i].innerText;
             }
         }
     }
@@ -130,7 +131,7 @@ function increaseQty(productId) {
     // Save updated cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    
+
     getSelectedProducts()
 }
 
@@ -151,7 +152,7 @@ function decreaseQty(productId) {
     // Save updated cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    
+
     getSelectedProducts()
 }
 
@@ -189,3 +190,18 @@ function orderSummary() {
 }
 
 
+
+async function checkoutRedirect() {
+    if (!totalBill) {
+        toast("Total bill not found");
+        return;
+    }
+
+    var orderObj = {
+        totalBill: totalBill.innerText
+    }
+
+
+    localStorage.setItem("billingInfo", JSON.stringify(orderObj))
+    window.location.href = "../user/checkout.html"
+}

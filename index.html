@@ -38,15 +38,17 @@
                         <option value="clothing">Clothing</option>
                         <option value="home-garden">Home & Garden</option> -->
                     </select>
-                    <a href="user/cart.html" class="btn btn-outline-dark position-relative">
+                    <a href="" class="btn btn-outline-dark position-relative" id="cart-btn">
                         <i class="bi bi-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="cart-count">
                             3
                         </span>
                     </a>
                     <a href="user/login.html" class="btn btn-primary" id="login-btn">Login</a>
-                    <a href="" class="btn btn-primary" id="logout-btn" style="display: none;" onclick="logOut(event)"><i
-                            class="bi bi-box-arrow-right me-2"></i>Logout</a>
+                    <a href="#" class="btn btn-primary" id="logout-btn" style="display: none;" onclick="logOut(event)">
+                        <div class="loader-spinner user-spinner mb-1 d-none mx-auto" style="background: #2f4c77; width: 20px; padding: 3px;" id="spinnerLogout"></div>
+                        <span id="logout-text"><i class="bi bi-box-arrow-right me-2"></i>Logout</span>
+                    </a>
                 </div>
             </div>
         </div>

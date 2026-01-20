@@ -14,10 +14,46 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
 }
 
 
-
 var categorySelect = document.getElementById("categorySelect")
 var categoryCount = document.getElementById("categoryCount");
 var productContainer = document.getElementById("product-container");
+var logOutBtn = document.getElementById("logout-btn")
+var logInBtn = document.getElementById("login-btn")
+var cartObj;
+var cartCount = document.getElementById("cart-count")
+var userLoggedIn;
+
+
+function redirect() {
+    userLoggedIn = localStorage.getItem("userLoggedIn");
+    localStorage.removeItem("productID")
+    localStorage.removeItem("categoryID")
+    localStorage.removeItem("categoryName")
+
+
+    if (userLoggedIn === "true") {
+        logOutBtn.style.display = "inline"
+        logInBtn.style.display = "none"
+
+        cartObj = JSON.parse(localStorage.getItem("cart"))
+        cartCount.classList.remove("d-none")
+        cartCount.textContent = cartObj.length;
+        console.log(cartObj.length);
+    }
+    else {
+        logOutBtn.style.display = "none"
+        logInBtn.style.display = "inline"
+        window.location.href = "../index.html"
+    }
+}
+redirect(); // protect dashboard
+
+function logOut(event) {
+    event.preventDefault();
+    localStorage.removeItem("userLoggedIn");
+    localStorage.removeItem("userID");
+    redirect();
+}
 
 async function getCategory() {
     const name = localStorage.getItem("categoryName")

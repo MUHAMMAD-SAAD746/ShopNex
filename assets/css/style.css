@@ -77,6 +77,11 @@ body {
     padding: 100px 0;
 }
 
+#logout-btn, #login-btn {
+    width: 110px;
+    height: 44px;
+}
+
 .product-card img {
     height: 200px;
     object-fit: cover;

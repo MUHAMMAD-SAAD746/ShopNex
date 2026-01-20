@@ -18,10 +18,17 @@ var categoryContainer = document.getElementById("category-container")
 var viewAllBtn = document.getElementById("view-all-btn")
 var logOutBtn = document.getElementById("logout-btn")
 var logInBtn = document.getElementById("login-btn")
+var cartObj;
+var cartCount = document.getElementById("cart-count")
+var cartBtn = document.getElementById("cart-btn")
+var userLoggedIn;
+var spinnerLogout = document.getElementById("spinnerLogout")
+var logoutText = document.getElementById("logout-text")
 
 function redirect() {
-    const userLoggedIn = localStorage.getItem("userLoggedIn");
+    userLoggedIn = localStorage.getItem("userLoggedIn");
 
+    localStorage.removeItem("ProductId")
     localStorage.removeItem("productID")
     localStorage.removeItem("categoryID")
     localStorage.removeItem("categoryName")
@@ -30,19 +37,57 @@ function redirect() {
     if (userLoggedIn === "true") {
         logOutBtn.style.display = "inline"
         logInBtn.style.display = "none"
+
+        cartObj = JSON.parse(localStorage.getItem("cart"))
+        cartCount.classList.remove("d-none")
+        cartCount.textContent = cartObj.length;
+        console.log(cartObj.length);
+
     }
     else {
+        console.log("else block")
         logOutBtn.style.display = "none"
         logInBtn.style.display = "inline"
+        cartCount.classList.add("d-none")
     }
 }
 redirect(); // protect dashboard
 
+// function logOut(event) {
+//     event.preventDefault();
+//     spinnerLogout.classList.remove("d-none")
+//     logoutText.classList.add("d-none")
+//     // localStorage.removeItem("userLoggedIn");
+//     // localStorage.removeItem("userID");
+
+//     firebase.auth().signOut().then(() => {
+//         localStorage.removeItem("userLoggedIn");
+//         localStorage.removeItem("userID");
+//         spinnerLogout.classList.add("d-none")
+
+//         redirect();
+//     })
+//         .catch((error) => {
+//             console.error("Logout error:", error);
+//             console.log("ssdsdsd")
+//         })
+// }
+
+
 function logOut(event) {
     event.preventDefault();
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("userID");
-    redirect();
+    spinnerLogout.classList.remove("d-none")
+    logoutText.classList.add("d-none")
+
+    firebase.auth().signOut()
+        .then(() => {
+            localStorage.removeItem("userLoggedIn");
+            localStorage.removeItem("userID");
+            redirect();
+        })
+        .catch((error) => {
+            console.error("Logout error:", error);
+        })
 }
 
 
@@ -155,13 +200,14 @@ getFeaturedProducts()
 
 async function productDetailRedirect(event, id) {
     event.preventDefault();
-    localStorage.removeItem("ProductId")
-    localStorage.removeItem("productID")
 
-    await firebase.database().ref("products").child(id).get().then((snapProduct) => {
+    if (userLoggedIn == "true") {
         localStorage.setItem("productID", id)
         window.location.href = "./user/product-detail.html"
-    })
+    }
+    else {
+        toast("Please login to view details")
+    }
 }
 
 
@@ -170,25 +216,50 @@ async function productDetailRedirect(event, id) {
 function sortByCategory(event, categoryName, ID) {
     event.preventDefault();
 
-    localStorage.setItem("categoryName", categoryName)
-    localStorage.setItem("categoryID", ID)
+    if (userLoggedIn == "true") {
+        localStorage.setItem("categoryName", categoryName)
+        localStorage.setItem("categoryID", ID)
 
-    window.location.href = "./user/products.html"
+        window.location.href = "./user/products.html"
+    }
+    else {
+        toast("Pease login to view product")
+    }
+
 }
 
 
 function productsPageRedirect() {
     event.preventDefault();
 
-    var categoryID = localStorage.getItem("categoryID")
+    if (userLoggedIn == "true") {
+        var categoryID = localStorage.getItem("categoryID")
 
-    if (categoryID) {
-        localStorage.removeItem("categoryID")
-        localStorage.removeItem("categoryName")
+        if (categoryID) {
+            localStorage.removeItem("categoryID")
+            localStorage.removeItem("categoryName")
+        }
+
+        window.location.href = "./user/products.html"
     }
-
-    window.location.href = "./user/products.html"
+    else {
+        toast("Please login to view Products")
+    }
 }
 viewAllBtn.addEventListener("click", () => {
     productsPageRedirect()
+})
+
+
+function cartRedirect() {
+    if (userLoggedIn == "true") {
+        window.location.href = "./user/cart.html"
+    }
+    else {
+        toast("Please login to view cart")
+    }
+}
+cartBtn.addEventListener("click", (event) => {
+    event.preventDefault()
+    cartRedirect()
 })
