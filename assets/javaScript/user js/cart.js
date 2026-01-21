@@ -14,28 +14,31 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
 }
 
 var productObj = [];
-let cartObj = JSON.parse(localStorage.getItem("cart")) || [];
+var cartObj;
+var summary = document.getElementById("summary")
 var tableBody = document.getElementById("table-body")
 var subTotal = document.getElementById("sub-total")
 var totalBill = document.getElementById("total-bill")
 var logOutBtn = document.getElementById("logout-btn")
 var logInBtn = document.getElementById("login-btn")
+var cartCount = document.getElementById("cart-count")
 
 function redirect() {
-    const userLoggedIn = localStorage.getItem("userLoggedIn");
-
-    localStorage.removeItem("productID")
-    localStorage.removeItem("categoryID")
-    localStorage.removeItem("categoryName")
-
+    userLoggedIn = localStorage.getItem("userLoggedIn");
 
     if (userLoggedIn === "true") {
         logOutBtn.style.display = "inline"
         logInBtn.style.display = "none"
+
+        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
+        cartCount.classList.remove("d-none")
+        cartCount.textContent = cartObj.length;
+        console.log(cartObj.length);
     }
     else {
         logOutBtn.style.display = "none"
         logInBtn.style.display = "inline"
+        window.location.href = "../index.html"
     }
 }
 redirect(); // protect dashboard
@@ -54,6 +57,7 @@ async function getProducts() {
     await firebase.database().ref("products").get().then((snapProduct) => {
         productObj = Object.values(snapProduct.val());
 
+        summary.classList.remove("d-none")
         getSelectedProducts()
     })
 }
@@ -171,6 +175,7 @@ function deleteFromCart(productId) {
     toast("Item removed from cart", "success");
 
     tableBody.innerHTML = "";
+    redirect()
     getSelectedProducts();
 }
 

@@ -66,7 +66,10 @@
                         <input type="password" class="form-control" id="login-password" placeholder="Enter password"
                             required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2" onclick="loginUser(event)">Login</button>
+                    <button type="submit" class="btn btn-primary w-100 py-2" onclick="loginUser(event)">
+                        <div class="loader-spinner user-spinner mb-1 d-none mx-auto" style="background: #2f4c77; width: 20px; padding: 3px;" id="spinnerLogin"></div>
+                        <span id="login-txt">Login</span>
+                    </button>
                 </form>
             </div>
 

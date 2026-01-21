@@ -38,7 +38,7 @@ function redirect() {
         logOutBtn.style.display = "inline"
         logInBtn.style.display = "none"
 
-        cartObj = JSON.parse(localStorage.getItem("cart"))
+        cartObj = JSON.parse(localStorage.getItem("cart")) || []
         cartCount.classList.remove("d-none")
         cartCount.textContent = cartObj.length;
         console.log(cartObj.length);
@@ -52,26 +52,6 @@ function redirect() {
     }
 }
 redirect(); // protect dashboard
-
-// function logOut(event) {
-//     event.preventDefault();
-//     spinnerLogout.classList.remove("d-none")
-//     logoutText.classList.add("d-none")
-//     // localStorage.removeItem("userLoggedIn");
-//     // localStorage.removeItem("userID");
-
-//     firebase.auth().signOut().then(() => {
-//         localStorage.removeItem("userLoggedIn");
-//         localStorage.removeItem("userID");
-//         spinnerLogout.classList.add("d-none")
-
-//         redirect();
-//     })
-//         .catch((error) => {
-//             console.error("Logout error:", error);
-//             console.log("ssdsdsd")
-//         })
-// }
 
 
 function logOut(event) {
@@ -223,7 +203,7 @@ function sortByCategory(event, categoryName, ID) {
         window.location.href = "./user/products.html"
     }
     else {
-        toast("Pease login to view product")
+        toast("Pease login to view Products")
     }
 
 }

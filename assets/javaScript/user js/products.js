@@ -27,9 +27,6 @@ var userLoggedIn;
 function redirect() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
     localStorage.removeItem("productID")
-    localStorage.removeItem("categoryID")
-    localStorage.removeItem("categoryName")
-
 
     if (userLoggedIn === "true") {
         logOutBtn.style.display = "inline"

@@ -188,11 +188,16 @@ async function uploadProfilePic() {
 var loginEmail = document.getElementById('login-email');
 var loginPassword = document.getElementById('login-password');
 var loginBtn = document.getElementById('login-btn');
+var loginTxt = document.getElementById("login-txt")
+var loginSpinner = document.getElementById("spinnerLogin")
 
 
 async function loginUser(event) {
     event.preventDefault();
     var isValid = true;
+
+    loginSpinner.classList.remove("d-none")
+    loginTxt.classList.add("d-none")
 
     // Reset border style
     loginEmail.style.border = "1px solid #ced4da"

@@ -15,7 +15,6 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
 
 
 
-
 var productTitle = document.getElementById("product-title")
 var shortDescription = document.getElementById("short-description")
 var productImg = document.getElementById("product-img")
@@ -26,6 +25,39 @@ var loaderSpinner = document.getElementById("loader-spinner")
 var stockStatus = document.getElementById("status")
 var addToCart = document.getElementById("add-to-cart")
 var qty = document.getElementById("qty")
+var logOutBtn = document.getElementById("logout-btn")
+var logInBtn = document.getElementById("login-btn")
+var cartObj;
+var cartCount = document.getElementById("cart-count")
+var userLoggedIn;
+
+
+function redirect() {
+    userLoggedIn = localStorage.getItem("userLoggedIn");
+
+    if (userLoggedIn === "true") {
+        logOutBtn.style.display = "inline"
+        logInBtn.style.display = "none"
+
+        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
+        cartCount.classList.remove("d-none")
+        cartCount.textContent = cartObj.length;
+        console.log(cartObj.length);
+    }
+    else {
+        logOutBtn.style.display = "none"
+        logInBtn.style.display = "inline"
+        window.location.href = "../index.html"
+    }
+}
+redirect(); // protect dashboard
+
+function logOut(event) {
+    event.preventDefault();
+    localStorage.removeItem("userLoggedIn");
+    localStorage.removeItem("userID");
+    redirect();
+}
 
 
 async function getProduct() {
@@ -79,11 +111,11 @@ getProduct()
 
 function addToCartFunction(productId) {
     // Get cart from localStorage
-    let cart = JSON.parse(localStorage.getItem("cart")) || []; // if null, create empty array
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
     var exist = false 
     var productQuantity = Number(qty.value)
 
-    var cartObj = {
+    cartObj = {
         productId,
         qty: productQuantity
     }
@@ -110,6 +142,7 @@ function addToCartFunction(productId) {
         localStorage.setItem("cart", JSON.stringify(cart));
         toast("Product added to cart", "success");
     }
+    redirect()
     console.log("Current cart:", cart); // for debugging
 }
 
