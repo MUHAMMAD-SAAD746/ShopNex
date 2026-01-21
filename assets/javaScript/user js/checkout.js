@@ -13,6 +13,7 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
     }).showToast();
 }
 
+localStorage.getItem("userID")
 var cartObj;
 var userObj;
 
@@ -30,6 +31,7 @@ var placeOrderBtn = document.getElementById("place-order-btn")
 var logOutBtn = document.getElementById("logout-btn")
 var logInBtn = document.getElementById("login-btn")
 var cartCount = document.getElementById("cart-count")
+var localID = localStorage.getItem("userID") || ""
 
 function redirect() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
@@ -62,8 +64,10 @@ function logOut(event) {
 
 async function getDbData() {
     checkoutForm.style.display = "none"
-    await firebase.database().ref("users").get().then((snap) => {
+    await firebase.database().ref(`users`).get().then((snap) => {
         userObj = Object.values(snap.val())
+        console.log(userObj);
+        
         console.log(userObj);
         checkoutForm.style.display = "block"
         spinner.style.display = "none"
@@ -80,7 +84,6 @@ var total = 0
 
 
 function getCartData() {
-    // cartObj = JSON.parse(localStorage.getItem("cart"));
     console.log(cartObj);
     details.innerHTML = "";
 
@@ -99,9 +102,6 @@ function getCartData() {
         var productAmount = document.getElementsByClassName("product-amount")
         total += parseFloat((productAmount[i].textContent).replace("$", ""));
         console.log(total.toFixed(2));
-        // if(total.toFixed(2) === NaN){
-        //     window.location.href = "./cart.html"
-        // }
     }
 
     details.innerHTML += `
@@ -124,11 +124,10 @@ function getCartData() {
 
 
 function getFormData() {
-    var localID = localStorage.getItem("userID")
     var userName;
     for (var i = 0; i < userObj.length; i++) {
         if (userObj[i].userID === localID) {
-            userName = userObj[i].fullName.split(" ")
+            userName = userObj[i].fullName.split(" ")            
             email.value = userObj[i].email
             console.log(userName)
         }
@@ -259,7 +258,21 @@ async function placeOrder(event) {
     var orderKey = await firebase.database().ref("orders").push().getKey();
     console.log(totalBill);
 
+    var products = {}
+
+    for(var i = 0; i < cartObj.length; i++){
+        var productId = cartObj[i].productId;
+
+        products[productId] = {
+            productID:cartObj[i].productId,
+            qty: cartObj[i].qty,
+            totalAmount: cartObj[i].totalAmount,
+            productTitle: cartObj[i].productTitle
+        };
+    }
+
     var orderObj = {
+        userID: localID,
         firstName: firstName.value,
         lastName: lastName.value,
         email: email.value,
@@ -271,11 +284,17 @@ async function placeOrder(event) {
         orderKey: orderKey,
         orderStatus: "Pending",
         totalBill: totalBill.textContent,
-        date: `${month} ${date}, ${year}`
+        date: `${month} ${date}, ${year}`,
+        products: products
     }
 
     await firebase.database().ref("orders").child(orderKey).set(orderObj)
-    localStorage.setItem("order", JSON.stringify(orderObj))
+
+    // ✅ SAVE MULTIPLE ORDERS IN LOCALSTORAGE
+    var orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(orderObj);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
     localStorage.removeItem("cart")
     toast("Order placed successfully","success", 1000)
 

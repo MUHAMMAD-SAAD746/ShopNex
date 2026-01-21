@@ -67,7 +67,8 @@
                             required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 py-2" onclick="loginUser(event)">
-                        <div class="loader-spinner user-spinner mb-1 d-none mx-auto" style="background: #2f4c77; width: 20px; padding: 3px;" id="spinnerLogin"></div>
+                        <div class="loader-spinner user-spinner mb-1 d-none mx-auto"
+                            style="background: #2f4c77; width: 20px; padding: 3px;" id="spinnerLogin"></div>
                         <span id="login-txt">Login</span>
                     </button>
                 </form>
@@ -77,13 +78,23 @@
             <div class="tab-pane fade" id="signup" role="tabpanel">
                 <form action="">
                     <div class="mb-3 d-flex align-items-center gap-3">
-                        <img src="" id="preview-img" alt="Profile Preview"
-                            class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                        <img src="" id="preview-img" alt="Profile Preview" class="img-thumbnail"
+                            style="width: 100px; height: 100px; object-fit: cover;">
                         <div class="w-100">
                             <label class="form-label" for="profile-image-input">Profile Image</label>
                             <input type="file" class="form-control" accept="image/*" id="profile-image-input">
                         </div>
                     </div>
+                    <a href="orders.html" class="btn btn-outline-dark me-2">
+                        <i class="bi bi-bag-check"></i>
+                    </a>
+                    <a href="cart.html" class="btn btn-outline-dark position-relative">
+                        <i class="bi bi-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="cart-count">
+                            3
+                        </span>
+                    </a>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="signup-fullname">Full Name</label>
@@ -91,24 +102,25 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="signup-contact">Contact Number</label>
-                            <input type="text" class="form-control" id="signup-contact" >
+                            <input type="text" class="form-control" id="signup-contact">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="signup-email">Email Address</label>
-                        <input type="email" class="form-control" id="signup-email" >
+                        <input type="email" class="form-control" id="signup-email">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="signup-password">Password</label>
-                            <input type="password" class="form-control" id="signup-password" >
+                            <input type="password" class="form-control" id="signup-password">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label" for="signup-confirm-password">Confirm Password</label>
-                            <input type="password" class="form-control" id="signup-confirm-password" >
+                            <input type="password" class="form-control" id="signup-confirm-password">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success w-100 py-2 mt-2" id="create-account-btn" onclick="createAccount(event)">Create Account</button>
+                    <button type="submit" class="btn btn-success w-100 py-2 mt-2" id="create-account-btn"
+                        onclick="createAccount(event)">Create Account</button>
                 </form>
             </div>
         </div>

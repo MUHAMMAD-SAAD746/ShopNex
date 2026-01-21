@@ -32,9 +32,13 @@ function redirect() {
         logOutBtn.style.display = "inline"
         logInBtn.style.display = "none"
 
-        cartObj = JSON.parse(localStorage.getItem("cart"))
-        cartCount.classList.remove("d-none")
-        cartCount.textContent = cartObj.length;
+        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (cartObj.length > 0) {
+            cartCount.classList.remove("d-none")
+            cartCount.textContent = cartObj.length;
+        }
+
         console.log(cartObj.length);
     }
     else {
@@ -106,7 +110,7 @@ async function getProducts() {
             var discountedPrice = originalPrice * (1 - (discountPercent / 100));
             discountedPrice = Number(discountedPrice.toFixed(2));
 
-            var hideDiscount = productObj[i].discount == "0"?"d-none":""
+            var hideDiscount = productObj[i].discount == "0" ? "d-none" : ""
 
             if (ID === null) {
                 productContainer.innerHTML += `
@@ -132,7 +136,7 @@ async function getProducts() {
             }
 
 
-            if(productObj[i].categoryID === ID){
+            if (productObj[i].categoryID === ID) {
                 productContainer.innerHTML += `
                     <div class="col-md-4 col-sm-6">
                         <div class="card h-100 product-card">
@@ -172,6 +176,6 @@ async function productDetailRedirect(event, id) {
 
     // await firebase.database().ref("products").child(id).get().then((snapProduct) => {
     //     localStorage.setItem("productID", id)
-        
+
     // })
 }

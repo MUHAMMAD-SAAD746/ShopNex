@@ -39,10 +39,11 @@ function redirect() {
         logInBtn.style.display = "none"
 
         cartObj = JSON.parse(localStorage.getItem("cart")) || []
-        cartCount.classList.remove("d-none")
-        cartCount.textContent = cartObj.length;
-        console.log(cartObj.length);
 
+        if (cartObj.length > 0) {
+            cartCount.classList.remove("d-none")
+            cartCount.textContent = cartObj.length;
+        }
     }
     else {
         console.log("else block")
