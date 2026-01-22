@@ -30,9 +30,28 @@ function logOut() {
 
 var orderObj;
 var tableBody = document.getElementById("tableBody")
+var localAdmin = localStorage.getItem("userId")
+var adminName = document.getElementById("adminName")
+var profileImg = document.getElementById("profileImg")
 
 
-async function getDbData(){
+async function getAdminDb(){
+    await firebase.database().ref("Admins").child(localAdmin).get().then((adminSnap) => {
+        var adminObj = adminSnap.val() || {}
+        console.log(adminObj);
+        adminName.textContent = adminObj.userName;
+        
+        if (!adminObj.profilePicUrl) {
+            profileImg.src = "https://placehold.co/40x40";
+            return;
+        }
+        profileImg.src = adminObj.profilePicUrl;
+    })
+}
+getAdminDb()
+
+
+async function getDbOrders(){
     await firebase.database().ref("orders").get().then((snapOrder) => {
         orderObj = Object.values(snapOrder.val() || {});
         console.log(orderObj)
@@ -42,9 +61,10 @@ async function getDbData(){
         console.log(error + "error")
     })
 }
-getDbData()
+getDbOrders()
 
 function showOrders() {
+    tableBody.innerHTML = ""
     for(var i = 0; i < orderObj.length; i++){
         console.log(orderObj[i])
         tableBody.innerHTML += `
@@ -53,7 +73,7 @@ function showOrders() {
                 <td>${orderObj[i].firstName} ${orderObj[i].lastName}</td>
                 <td>${orderObj[i].totalBill}</td>
                 <td>${orderObj[i].paymentMethod}</td>
-                <td><span class="badge bg-warning text-dark order-status">${orderObj[i].orderStatus}</span></td>
+                <td><span class="badge bg-warning text-dark order-status status-badge">${orderObj[i].orderStatus}</span></td>
                 <td>${orderObj[i].date}</td>
                 <td class="text-end">
                     <button class="btn btn-sm btn-outline-primary"><i
@@ -70,11 +90,11 @@ function showOrders() {
             orderStatusObj[i].classList.add("bg-success")
             orderStatusObj[i].classList.add("text-white")
         }
-        else if(orderStatus == "Dilivered"){
+        else if(orderStatus == "Delivered"){
             orderStatusObj[i].classList.remove("bg-warning")
             orderStatusObj[i].classList.add("bg-primary")
             orderStatusObj[i].classList.add("text-white")
         }
-        
+
     }
 }

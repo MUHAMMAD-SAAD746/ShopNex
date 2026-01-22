@@ -66,7 +66,7 @@ async function adminData() {
         var userObj = snapshot.val();
         adminName.textContent = userObj.userName;
 
-        if (userObj.profilePicUrl == "" || userObj.profilePicUrl == null || userObj.profilePicUrl == undefined) {
+        if (!userObj.profilePicUrl) {
             profileImg.src = "https://placehold.co/40x40";
             return;
         }

@@ -32,9 +32,10 @@ var logOutBtn = document.getElementById("logout-btn")
 var logInBtn = document.getElementById("login-btn")
 var cartCount = document.getElementById("cart-count")
 var localID = localStorage.getItem("userID") || ""
+var userLoggedIn;
 
 function redirect() {
-    userLoggedIn = localStorage.getItem("userLoggedIn");
+    userLoggedIn = localStorage.getItem("userLoggedIn") || "";
 
     if (userLoggedIn === "true") {
         logOutBtn.style.display = "inline"

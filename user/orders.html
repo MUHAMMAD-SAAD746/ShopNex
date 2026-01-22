@@ -13,10 +13,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
+
+    <style>
+        .status-badge {
+            width: 90px;
+        }
+    </style>
 </head>
 
 <body>
-
     <!-- Header / Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
@@ -79,8 +84,12 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id="tableBody">
+                    <tr id="loader-loading">
+                        <!-- <td colspan="5" style="text-align: center;">Loading .....</td> -->
+                        <td colspan="5" style="text-align: center;"><div class="loader-loading"></div></td>
+                    </tr>
+                    <!-- <tr>
                         <td class="fw-bold">#ORD-12345</td>
                         <td>Sep 25, 2023</td>
                         <td>$120.00</td>
@@ -106,7 +115,7 @@
                         <td>
                             <a href="order-details.html" class="btn btn-sm btn-outline-primary">View Details</a>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>

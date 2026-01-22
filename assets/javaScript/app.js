@@ -21,6 +21,7 @@ var logInBtn = document.getElementById("login-btn")
 var cartObj;
 var cartCount = document.getElementById("cart-count")
 var cartBtn = document.getElementById("cart-btn")
+var orderBtn = document.getElementById("order-btn")
 var userLoggedIn;
 var spinnerLogout = document.getElementById("spinnerLogout")
 var logoutText = document.getElementById("logout-text")
@@ -117,8 +118,8 @@ async function getcategories() {
                         </div>
                     </a>
                 </div>`
-
-            selectCategory.addEventListener("change", function (event) {
+        }
+        selectCategory.addEventListener("change", function (event) {
                 var selectedIndex = event.target.selectedIndex;
                 var selectedOption = event.target.options[selectedIndex];
 
@@ -127,7 +128,6 @@ async function getcategories() {
 
                 sortByCategory(event, categoryName, categoryID);
             });
-        }
 
     })
 }
@@ -243,4 +243,18 @@ function cartRedirect() {
 cartBtn.addEventListener("click", (event) => {
     event.preventDefault()
     cartRedirect()
+})
+
+
+function orderRedirect() {
+    if (userLoggedIn == "true") {
+        window.location.href = "./user/orders.html"
+    }
+    else {
+        toast("Please login to view Orders")
+    }
+}
+orderBtn.addEventListener("click", (event) => {
+    event.preventDefault()
+    orderRedirect()
 })

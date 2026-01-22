@@ -14,6 +14,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+<style>
+    .status-badge {
+            width: 90px;
+        }
+</style>
 
 <body>
 
@@ -57,8 +62,9 @@
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Orders</span>
                 <div class="d-flex align-items-center">
-                    <span class="me-3">Hello, <strong>Admin</strong></span>
-                    <img src="https://placehold.co/40x40" class="rounded-circle" alt="Admin">
+                    <span class="me-3">Hello, <strong id="adminName">Admin</strong></span>
+                    <img src="https://placehold.co/50x50?text=profile" class="rounded-circle" 
+                        alt="Admin" id="profileImg" height="50" width="50">
                 </div>
             </div>
         </nav>
@@ -99,6 +105,9 @@
                                 </thead>
                                 <tbody id="tableBody">
                                     <tr>
+                                        <td colspan="7" style="text-align: center;"><div class="loader-loading"></div></td>
+                                    </tr>
+                                    <!-- <tr>
                                         <td>#ORD-001</td>
                                         <td>John Doe</td>
                                         <td>$120.50</td>
@@ -109,8 +118,8 @@
                                             <button class="btn btn-sm btn-outline-primary"><i
                                                     class="bi bi-eye"></i></button>
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr> -->
+                                    <!-- <tr>
                                         <td>#ORD-002</td>
                                         <td>Jane Smith</td>
                                         <td>$85.00</td>
@@ -121,8 +130,8 @@
                                             <button class="btn btn-sm btn-outline-primary"><i
                                                     class="bi bi-eye"></i></button>
                                         </td>
-                                    </tr>
-                                    <tr>
+                                    </tr> -->
+                                    <!-- <tr>
                                         <td>#ORD-003</td>
                                         <td>Michael Lee</td>
                                         <td>$210.00</td>
@@ -133,7 +142,7 @@
                                             <button class="btn btn-sm btn-outline-primary"><i
                                                     class="bi bi-eye"></i></button>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
