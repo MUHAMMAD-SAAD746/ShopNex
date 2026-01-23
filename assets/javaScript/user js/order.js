@@ -78,7 +78,7 @@ function showOrders() {
                     <td>$${orderObj[i].totalBill}</td>
                     <td><span class="badge bg-success orderStatus status-badge">${orderObj[i].orderStatus}</span></td>
                     <td>
-                        <a href="order-details.html" class="btn btn-sm btn-outline-primary">View Details</a>
+                        <a href="#" class="btn btn-sm btn-outline-primary" onclick="orderDetailsRedirect('${orderObj[i].orderKey}')">View Details</a>
                     </td>
                 </tr>
             `
@@ -98,6 +98,16 @@ function showOrders() {
             }
         }
     }
+}
 
+
+
+function orderDetailsRedirect(id){
+    var orderID = id
+
+    if(orderID){
+        localStorage.setItem("orderID", orderID)
+        window.location.href = "../user/order-details.html"
+    }
 
 }

@@ -48,10 +48,8 @@
                     </a>
                     <a href="cart.html" class="btn btn-outline-dark position-relative">
                         <i class="bi bi-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                            id="cart-count">
-                            3
-                        </span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+                            id="cart-count"></span>
                     </a>
                     <a href="user/login.html" class="btn btn-primary" id="login-btn">Login</a>
                     <a href="#" class="btn btn-primary" id="logout-btn" style="display: none;" onclick="logOut(event)">
@@ -76,13 +74,13 @@
             <div class="card-header bg-light py-3">
                 <div class="row align-items-center">
                     <div class="col-md-4">
-                        <h5 class="mb-0">Order #ORD-12345</h5>
+                        <h5 class="mb-0">Order #<span id="order-id"></span></h5>
                     </div>
                     <div class="col-md-4 text-md-center">
-                        <span class="text-muted">Placed on:</span> <span class="fw-bold">Sep 25, 2023</span>
+                        <span class="text-muted">Placed on:</span> <span class="fw-bold" id="date">Sep 25, 2023</span>
                     </div>
                     <div class="col-md-4 text-md-end">
-                        <span class="badge bg-success fs-6">Delivered</span>
+                        <span class="badge bg-success fs-6" id="status">Delivered</span>
                     </div>
                 </div>
             </div>
@@ -97,11 +95,14 @@
                                 <th class="text-end">Subtotal</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             <tr>
+                                <td colspan="4" style="text-align: center;"><div class="loader-loading"></div></td>
+                            </tr>
+                            <!-- <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="https://via.placeholder.com/60" class="img-fluid rounded me-3"
+                                        <img src="https://placehold.co/60x60?text=product" class="img-fluid rounded me-3"
                                             alt="Product Image">
                                         <div>
                                             <h6 class="mb-0">Wireless Headphones</h6>
@@ -112,11 +113,11 @@
                                 <td>$50.00</td>
                                 <td>2</td>
                                 <td class="text-end fw-bold">$100.00</td>
-                            </tr>
-                            <tr>
+                            </tr> -->
+                            <!-- <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="https://via.placeholder.com/60" class="img-fluid rounded me-3"
+                                        <img src="https://placehold.co/60x60?text=product" class="img-fluid rounded me-3"
                                             alt="Product Image">
                                         <div>
                                             <h6 class="mb-0">USB-C Cable</h6>
@@ -127,24 +128,24 @@
                                 <td>$20.00</td>
                                 <td>1</td>
                                 <td class="text-end fw-bold">$20.00</td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                         <tfoot class="border-top-0">
                             <tr>
                                 <td colspan="3" class="text-end border-0 pt-4">Subtotal:</td>
-                                <td class="text-end border-0 pt-4">$120.00</td>
+                                <td class="text-end border-0 pt-4" id="Subtotal">$0.00</td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="text-end border-0">Shipping:</td>
-                                <td class="text-end border-0">$0.00</td>
+                                <td class="text-end border-0" id="shipping">$0.00</td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="text-end border-0">Tax:</td>
-                                <td class="text-end border-0">$0.00</td>
+                                <td class="text-end border-0" id="tax">$0.00</td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="text-end border-0 fw-bold fs-5">Total:</td>
-                                <td class="text-end border-0 fw-bold fs-5">$120.00</td>
+                                <td class="text-end border-0 fw-bold fs-5" id="total">$0.00</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -160,11 +161,13 @@
                     </div>
                     <div class="card-body">
                         <p class="mb-0">
-                            <strong>John Doe</strong><br>
-                            123 Main St, Apt 4B<br>
-                            New York, NY 10001<br>
+                            <strong id="full-name">John Doe</strong><br>
+                            <span id="address">123 Main St, Apt 4B</span><br>
+                            <span id="city">New York</span>,
+                            <span id="zip">NY 10001</span><br>
                             United States<br>
-                            <i class="bi bi-telephone me-2"></i> +1 234 567 8900
+                            <i class="bi bi-telephone me-2"></i>
+                            <span id="contact-number"> +1 234 567 8900</span>
                         </p>
                     </div>
                 </div>
@@ -175,9 +178,12 @@
                         <h5 class="mb-0">Payment Method</h5>
                     </div>
                     <div class="card-body">
-                        <p class="mb-0">
+                        <!-- <p class="mb-0">
                             <i class="bi bi-credit-card me-2"></i> Visa ending in <strong>1234</strong><br>
                             Exp: 12/25
+                        </p> -->
+                        <p class="mb-0">
+                            <i class="bi bi-credit-card me-2"></i><span id="payment-method"></span>
                         </p>
                     </div>
                 </div>
@@ -251,7 +257,7 @@
     <!-- Bootstrap JavaScript CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom Javascript -->
-    <!-- <script src="../assets/javaScript/user js/order-details.js"></script> -->
+    <script src="../assets/javaScript/user js/order-details.js"></script>
 </body>
 
 </html>
