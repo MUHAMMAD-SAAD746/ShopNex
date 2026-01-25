@@ -35,12 +35,12 @@ var adminName = document.getElementById("adminName")
 var profileImg = document.getElementById("profileImg")
 
 
-async function getAdminDb(){
+async function getAdminDb() {
     await firebase.database().ref("Admins").child(localAdmin).get().then((adminSnap) => {
         var adminObj = adminSnap.val() || {}
         console.log(adminObj);
         adminName.textContent = adminObj.userName;
-        
+
         if (!adminObj.profilePicUrl) {
             profileImg.src = "https://placehold.co/40x40";
             return;
@@ -51,21 +51,21 @@ async function getAdminDb(){
 getAdminDb()
 
 
-async function getDbOrders(){
+async function getDbOrders() {
     await firebase.database().ref("orders").get().then((snapOrder) => {
         orderObj = Object.values(snapOrder.val() || {});
         console.log(orderObj)
         showOrders()
     })
-    .catch((error) => {
-        console.log(error + "error")
-    })
+        .catch((error) => {
+            console.log(error + "error")
+        })
 }
 getDbOrders()
 
 function showOrders() {
     tableBody.innerHTML = ""
-    for(var i = 0; i < orderObj.length; i++){
+    for (var i = 0; i < orderObj.length; i++) {
         console.log(orderObj[i])
         tableBody.innerHTML += `
             <tr>
@@ -76,8 +76,10 @@ function showOrders() {
                 <td><span class="badge bg-warning text-dark order-status status-badge">${orderObj[i].orderStatus}</span></td>
                 <td>${orderObj[i].date}</td>
                 <td class="text-end">
-                    <button class="btn btn-sm btn-outline-primary"><i
-                            class="bi bi-eye"></i></button>
+                    <button class="btn btn-sm btn-outline-primary"
+                        onclick="goToOrderDetails('${orderObj[i].orderKey}')">
+                        <i class="bi bi-eye"></i>
+                    </button>
                 </td>
             </tr>
         `
@@ -85,16 +87,23 @@ function showOrders() {
         var orderStatusObj = document.getElementsByClassName("order-status")
         var orderStatus = orderStatusObj[i].textContent;
 
-        if(orderStatus == "Shipped"){
+        if (orderStatus == "Shipped") {
             orderStatusObj[i].classList.remove("bg-warning")
             orderStatusObj[i].classList.add("bg-success")
             orderStatusObj[i].classList.add("text-white")
         }
-        else if(orderStatus == "Delivered"){
+        else if (orderStatus == "Delivered") {
             orderStatusObj[i].classList.remove("bg-warning")
             orderStatusObj[i].classList.add("bg-primary")
             orderStatusObj[i].classList.add("text-white")
         }
-
     }
+}
+
+
+
+
+function goToOrderDetails(orderId) {
+    localStorage.setItem("selectedOrderId", orderId);
+    window.location.href = "../admin/order-details.html";
 }

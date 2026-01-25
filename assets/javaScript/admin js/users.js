@@ -56,7 +56,7 @@ async function getUsersInfo(){
         for (var i = 0; i < userObj.length; i++) {
             tableBody.innerHTML += `
                 <tr>
-                    <td>${userObj[i].userID}</td>
+                    <td style="max-width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">${userObj[i].userID}</td>
                     <td>
                         <div class="d-flex align-items-center"><img src="${userObj[i].profilePic}"
                                 width="30" height="30" class="rounded-circle me-2" alt=""> ${userObj[i].fullName}</div>

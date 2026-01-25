@@ -1,19 +1,4 @@
-function redirect() {
-    const adminLogin = localStorage.getItem("adminLogin");
-    if (adminLogin !== "true") {
-        window.location.href = "./login.html";
-    }
-}
-redirect(); // protect dashboard
-
-function logOut() {
-    localStorage.removeItem("adminLogin");
-    localStorage.removeItem("userId");
-    redirect();
-}
-
 // function to show toast messages
-
 function toast(msg, className = "error", duration = 2000, destination = null) {
     Toastify({
         text: msg,
@@ -28,6 +13,21 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
         onClick: function () { } // Callback after click
     }).showToast();
 }
+
+function redirect() {
+    const adminLogin = localStorage.getItem("adminLogin");
+    if (adminLogin !== "true") {
+        window.location.href = "./login.html";
+    }
+}
+redirect(); // protect dashboard
+
+function logOut() {
+    localStorage.removeItem("adminLogin");
+    localStorage.removeItem("userId");
+    redirect();
+}
+
 
 
 

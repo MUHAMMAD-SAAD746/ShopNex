@@ -22,6 +22,7 @@ var totalBill = document.getElementById("total-bill")
 var logOutBtn = document.getElementById("logout-btn")
 var logInBtn = document.getElementById("login-btn")
 var cartCount = document.getElementById("cart-count")
+var tax = document.getElementById("tax")
 
 function redirect() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
@@ -31,8 +32,15 @@ function redirect() {
         logInBtn.style.display = "none"
 
         cartObj = JSON.parse(localStorage.getItem("cart")) || [];
-        cartCount.classList.remove("d-none")
-        cartCount.textContent = cartObj.length;
+
+        if (cartObj.length > 0) {
+            // cartCount.classList.remove("d-none")
+            cartCount.textContent = cartObj.length;
+        }
+        else{
+            cartCount.classList.add("d-none")
+        }
+
         console.log(cartObj.length);
     }
     else {
@@ -68,6 +76,14 @@ function getSelectedProducts() {
     let cartObj = JSON.parse(localStorage.getItem("cart")) || [];
     console.log(cartObj);
     tableBody.innerHTML = ""
+
+    if (cartObj.length == 0) {
+        tableBody.innerHTML = `
+            <tr id="loader-loading">
+                <td colspan="5" class="text-center">Cart is empty.</td>
+            </tr>
+        `
+    }
 
     for (var i = 0; i < cartObj.length; i++) {
         for (let j = 0; j < productObj.length; j++) {
@@ -112,6 +128,7 @@ function getSelectedProducts() {
                 cartObj[i].totalAmount = price;
                 var productTitle = document.getElementsByClassName("product-title")
                 cartObj[i].productTitle = productTitle[i].innerText;
+                cartObj[i].imageURL = productObj[j].imageURL;
             }
         }
     }
@@ -184,14 +201,21 @@ function orderSummary() {
 
     var productTotal = document.getElementsByClassName("product-total")
     var total = 0;
+    var taxAmount = 0
+
+    if(cartObj.length > 0){
+        taxAmount = 28.40;
+    }
 
     for (var i = 0; i < productTotal.length; i++) {
         var price = parseFloat(productTotal[i].innerText.replace("$", ""));
         total += price;
     }
     subTotal.textContent = `$${total.toFixed(2)}`
+    tax.textContent = `${taxAmount}`
+    totalBill.textContent = (total + taxAmount).toFixed(2)
 
-    totalBill.textContent = (total + 28.40).toFixed(2)
+    
 }
 
 

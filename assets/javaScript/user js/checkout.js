@@ -259,6 +259,7 @@ async function placeOrder(event) {
     var orderKey = await firebase.database().ref("orders").push().getKey();
     console.log(totalBill);
 
+    var userId =localStorage.getItem("userID")
     var products = {}
 
     for(var i = 0; i < cartObj.length; i++){
@@ -268,9 +269,13 @@ async function placeOrder(event) {
             productID:cartObj[i].productId,
             qty: cartObj[i].qty,
             totalAmount: cartObj[i].totalAmount,
-            productTitle: cartObj[i].productTitle
+            productTitle: cartObj[i].productTitle,
+            imageURL: cartObj[i].imageURL
+            // userId
         };
     }
+
+    var totalBillAmount = Number((totalBill.textContent).replace("$",""))
 
     var orderObj = {
         userID: localID,
@@ -284,12 +289,14 @@ async function placeOrder(event) {
         paymentMethod: paymentMethod.value,
         orderKey: orderKey,
         orderStatus: "Pending",
-        totalBill: totalBill.textContent,
+        totalBill: totalBillAmount,
         date: `${month} ${date}, ${year}`,
         products: products
     }
 
     await firebase.database().ref("orders").child(orderKey).set(orderObj)
+    await firebase.database().ref("users").child(userId).child("orderkeys").child(orderKey).push(orderKey)
+
 
     // ✅ SAVE MULTIPLE ORDERS IN LOCALSTORAGE
     var orders = JSON.parse(localStorage.getItem("orders")) || [];
