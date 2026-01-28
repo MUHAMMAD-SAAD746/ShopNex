@@ -40,9 +40,10 @@ function redirect() {
         logInBtn.style.display = "none"
 
         cartObj = JSON.parse(localStorage.getItem("cart")) || [];
-        cartCount.classList.remove("d-none")
-        cartCount.textContent = cartObj.length;
-        console.log(cartObj.length);
+        if (cartObj.length > 0) {
+            cartCount.classList.remove("d-none")
+            cartCount.textContent = cartObj.length;
+        }
     }
     else {
         logOutBtn.style.display = "none"
@@ -112,7 +113,7 @@ getProduct()
 function addToCartFunction(productId) {
     // Get cart from localStorage
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    var exist = false 
+    var exist = false
     var productQuantity = Number(qty.value)
 
     cartObj = {
@@ -125,19 +126,19 @@ function addToCartFunction(productId) {
         if (cart[i].productId === productId) {
             exist = true;
 
-            if(Number(cart[i].qty) !== productQuantity){
+            if (Number(cart[i].qty) !== productQuantity) {
                 cart[i].qty = productQuantity;
                 localStorage.setItem("cart", JSON.stringify(cart));
                 toast("Quantity updated in cart", "success");
             }
-            else{
+            else {
                 toast("Product already in cart with same quantity", "info");
             }
             break;
         }
     }
 
-    if(!exist){
+    if (!exist) {
         cart.push(cartObj);
         localStorage.setItem("cart", JSON.stringify(cart));
         toast("Product added to cart", "success");
