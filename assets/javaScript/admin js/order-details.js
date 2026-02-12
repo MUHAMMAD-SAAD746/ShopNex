@@ -22,7 +22,7 @@ function redirect() {
         window.location.replace("./login.html");
     }
 
-    else if(!orderID){
+    else if (!orderID) {
         toast("error getting order details.")
         setTimeout(() => {
             window.location.replace("./orders.html");
@@ -43,8 +43,13 @@ var userObj;
 var adminID = localStorage.getItem("userId")
 var tableBody = document.getElementById("tableBody")
 var orderIDElem = document.getElementById("order-id")
+
+// ============ ORDER INFO VARIABLES ============
+
 var date = document.getElementById("date")
 var paymentMethod = document.getElementById("payment-method")
+var orderStatus = document.getElementById("status")
+var updateStatus = document.getElementById("updateStatus")
 
 // ========== CUSTOMER DETAILS VARIABLES ============
 
@@ -62,7 +67,7 @@ var subTotal = document.getElementById("sub-total")
 // var  = document.getElementById("")
 // var  = document.getElementById("")
 
-async function getOrderFromDb(){
+async function getOrderFromDb() {
     await firebase.database().ref("orders").child(orderID).get().then((orderSnap) => {
         orderObj = orderSnap.val()
         orderedProducts = Object.values(orderObj.products)
@@ -71,32 +76,32 @@ async function getOrderFromDb(){
         getUserFromDb()
 
     })
-    .catch((e) => {
-        console.log("error" + e)
-    })
+        .catch((e) => {
+            console.log("error" + e)
+        })
 }
 getOrderFromDb()
 
 
-async function getUserFromDb(){
+async function getUserFromDb() {
     await firebase.database().ref("users").child(orderObj.userID).get().then((userSnap) => {
         userObj = userSnap.val();
         console.log("user Object " + userObj);
         showSelectedOrder()
     })
-    .catch((e) => {
-        console.log("error " + e)
-    })
+        .catch((e) => {
+            console.log("error " + e)
+        })
 }
 
 
 
-function showSelectedOrder(){
+function showSelectedOrder() {
     for (let i = 0; i < orderedProducts.length; i++) {
-        var productPrice = (orderedProducts[i].totalAmount)/(orderedProducts[i].qty)
+        var productPrice = (orderedProducts[i].totalAmount) / (orderedProducts[i].qty)
         var productImg = orderedProducts[i].imageURL
-        
-        
+
+
         tableBody.innerHTML += `
             <tr>
                 <td>
@@ -119,11 +124,67 @@ function showSelectedOrder(){
 
 
     // ============= ORDER INFO DATA =============
+    function orderInfoData() {
+        orderIDElem.textContent = orderID;
+        date.textContent = orderObj.date;
+        paymentMethod.textContent = orderObj.paymentMethod;
+        orderStatus.textContent = orderObj.orderStatus;
+        updateStatus.value = orderObj.orderStatus;
+        if (orderObj.orderStatus === "Shipped") {
+            orderStatus.classList.add("bg-success")
+            orderStatus.classList.add("text-white")
+        }
+        else if (orderObj.orderStatus === "Delivered") {
+            orderStatus.classList.add("bg-primary")
+            orderStatus.classList.add("text-white")
+        }
+        else if (orderObj.orderStatus === "Cancelled") {
+            orderStatus.classList.add("bg-dangers")
+            orderStatus.classList.add("text-white")
+        }
+        else {
+            orderStatus.classList.add("bg-warning")
+        }
+    }
+    orderInfoData();
 
-    orderIDElem.textContent = orderID;
-    date.textContent = orderObj.date;
-    paymentMethod.textContent = orderObj.paymentMethod;
 
+    updateStatus.addEventListener("change", async function(){
+        var newStatus = this.value;
+        await firebase.database().ref("orders").child(orderID).update({
+            orderStatus: newStatus
+        }).then(() => {
+            toast("Order status updated successfully", "success")
+            
+            if(newStatus === "Shipped") {
+                orderStatus.textContent = "Shipped";
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.add("bg-success")
+                orderStatus.classList.add("text-white")
+            }
+            if(newStatus === "Delivered") {
+                orderStatus.textContent = "Delivered";
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.add("bg-primary")
+                orderStatus.classList.add("text-white")
+            }
+            if(newStatus === "Pending") {
+                orderStatus.textContent = "Pending";
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.add("bg-warning")
+                orderStatus.classList.remove("text-white")
+            }
+            if(newStatus === "Cancelled") {
+                orderStatus.textContent = "Cancelled";
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.add("bg-danger")
+                orderStatus.classList.add("text-white")
+            }
+        })
+            .catch((e) => {
+                toast("Error updating order status: " + e, "error")
+            })
+    });
 
     // ============= CUSTOMER DETAILS DATA ==========
 

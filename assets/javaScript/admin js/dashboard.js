@@ -17,6 +17,12 @@ function logOut() {
 }
 
 
+
+var productObj;
+var categoriesObj;
+var userObj;
+var orderObj;
+
 async function adminData() {
     var profileImg = document.getElementById("profileImg");
     var userId = localStorage.getItem("userId");
@@ -41,7 +47,7 @@ adminData()
 var productCount = document.getElementById("totalProduct");
 async function totalProduct() {
     await firebase.database().ref("products").get().then((snapshot) => {
-        var productObj = Object.values(snapshot.val());
+        productObj = Object.values(snapshot.val());
         productCount.textContent = productObj.length;
     })
 }
@@ -52,8 +58,32 @@ totalProduct();
 var categoriesCount = document.getElementById("totalCategories");
 async function totalCategories() {
     await firebase.database().ref("categories").get().then((snapshot) => {
-        var categoriesObj = Object.values(snapshot.val());
+        categoriesObj = Object.values(snapshot.val());
         categoriesCount.textContent = categoriesObj.length;
     })
 }
 totalCategories();
+
+
+
+var totalUser = document.getElementById("totalUsers")
+async function totalUsers() {
+    await firebase.database().ref("users").get().then((userSnap) => {
+        userObj = Object.values(userSnap.val())
+        console.log(userObj);
+
+        totalUser.textContent = userObj.length;
+    })
+}
+totalUsers()
+
+
+
+var totalOrder = document.getElementById("totalOrders")
+async function totalOrders() {
+    await firebase.database().ref("orders").get().then((orderSnap) => {
+        orderObj = Object.values(orderSnap.val())
+        totalOrder.textContent = orderObj.length;
+    })
+}
+totalOrders()
