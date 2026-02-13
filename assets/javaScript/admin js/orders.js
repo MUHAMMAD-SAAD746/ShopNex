@@ -97,6 +97,11 @@ function showOrders() {
             orderStatusObj[i].classList.add("bg-primary")
             orderStatusObj[i].classList.add("text-white")
         }
+        else if (orderStatus == "Cancelled") {
+            // orderStatusObj[i].classList.remove("bg-warning")
+            orderStatusObj[i].classList.add("bg-danger")
+            orderStatusObj[i].classList.add("text-white")
+        }
     }
 }
 

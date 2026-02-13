@@ -76,7 +76,7 @@ function showOrders() {
                     <td class="fw-bold">${orderObj[i].orderKey}</td>
                     <td>${orderObj[i].date}</td>
                     <td>$${orderObj[i].totalBill}</td>
-                    <td><span class="badge bg-success orderStatus status-badge">${orderObj[i].orderStatus}</span></td>
+                    <td><span class="badge orderStatus status-badge">${orderObj[i].orderStatus}</span></td>
                     <td>
                         <a href="#" class="btn btn-sm btn-outline-primary" onclick="orderDetailsRedirect('${orderObj[i].orderKey}')">View Details</a>
                     </td>
@@ -87,14 +87,20 @@ function showOrders() {
             var orderStatus = orderObj[i].orderStatus;
 
             if (orderStatus == "Pending") {
-                orderStatusObj[i].classList.remove("bg-success")
                 orderStatusObj[i].classList.add("bg-warning")
                 orderStatusObj[i].classList.add("text-dark")
                 orderStatusObj[i].innerText = "Processing"
             }
             else if (orderStatus == "Shipped") {
-                orderStatusObj[i].classList.remove("bg-success")
+                orderStatusObj[i].classList.add("bg-success")
+            }
+            else if (orderStatus == "Cancelled") {
+                orderStatusObj[i].classList.add("bg-danger")
+                orderStatusObj[i].classList.add("text-white")
+            }
+            else if (orderStatus == "Delivered") {
                 orderStatusObj[i].classList.add("bg-primary")
+                orderStatusObj[i].classList.add("text-white")
             }
         }
     }

@@ -139,7 +139,7 @@ function showSelectedOrder() {
             orderStatus.classList.add("text-white")
         }
         else if (orderObj.orderStatus === "Cancelled") {
-            orderStatus.classList.add("bg-dangers")
+            orderStatus.classList.add("bg-danger")
             orderStatus.classList.add("text-white")
         }
         else {
@@ -158,25 +158,25 @@ function showSelectedOrder() {
             
             if(newStatus === "Shipped") {
                 orderStatus.textContent = "Shipped";
-                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success","bg-danger")
                 orderStatus.classList.add("bg-success")
                 orderStatus.classList.add("text-white")
             }
             if(newStatus === "Delivered") {
                 orderStatus.textContent = "Delivered";
-                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success","bg-danger")
                 orderStatus.classList.add("bg-primary")
                 orderStatus.classList.add("text-white")
             }
             if(newStatus === "Pending") {
                 orderStatus.textContent = "Pending";
-                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success","bg-danger")
                 orderStatus.classList.add("bg-warning")
                 orderStatus.classList.remove("text-white")
             }
             if(newStatus === "Cancelled") {
                 orderStatus.textContent = "Cancelled";
-                orderStatus.classList.remove("bg-warning","bg-primary","bg-success")
+                orderStatus.classList.remove("bg-warning","bg-primary","bg-success","bg-danger")
                 orderStatus.classList.add("bg-danger")
                 orderStatus.classList.add("text-white")
             }
