@@ -78,6 +78,32 @@ var billCalc = 0;
 var taxEl = document.getElementById("tax")
 var shipping = document.getElementById("shipping")
 var total = document.getElementById("total")
+var orderObj;
+var orderedProducts;
+
+
+
+
+
+async function getOrderFromDb() {
+    var localOrder = localStorage.getItem("orderID") || ""
+
+    if (!localOrder) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4">Error getting Orders</td>
+            </tr>
+        `
+        return;
+    }
+
+    var orderSnap = await firebase.database().ref("orders").child(localOrder).get()
+    orderObj = orderSnap.val() || {}
+    orderedProducts = Object.values(orderObj.products);
+
+    showOrders()
+}
+getOrderFromDb()
 
 
 async function showOrders() {
@@ -92,9 +118,9 @@ async function showOrders() {
         return;
     }
 
-    var orderSnap = await firebase.database().ref("orders").child(localOrder).get()
-    var orderObj = orderSnap.val() || {}
-    var orderedProducts = Object.values(orderObj.products);
+    // var orderSnap = await firebase.database().ref("orders").child(localOrder).get()
+    // var orderObj = orderSnap.val() || {}
+    // var orderedProducts = Object.values(orderObj.products);
 
 
 
@@ -139,7 +165,7 @@ async function showOrders() {
     SubTotal.textContent = `$${billCalc}`
     taxEl.textContent = `28.40`
     shipping.textContent = `Free`
-    total.textContent = `${(parseFloat(orderObj.totalBill.replace("$","")) + 28.40).toFixed(2)}`
+    total.textContent = `${(parseFloat(orderObj.totalBill) + 28.40).toFixed(2)}`
     fullName.textContent = `${orderObj.firstName} ${orderObj.lastName}`
     address.textContent = `${orderObj.address}`
     city.textContent = `${orderObj.city}`
@@ -149,13 +175,19 @@ async function showOrders() {
 
     orderStatus.textContent = `${orderObj.orderStatus}`
     if (orderObj.orderStatus == "Shipped") {
-        orderStatus.classList.remove("bg-success")
-        orderStatus.classList.add("bg-primary")
+        orderStatus.classList.add("bg-success")
     }
     else if (orderObj.orderStatus == "Pending") {
-        orderStatus.classList.remove("bg-success")
         orderStatus.classList.add("bg-warning")
         orderStatus.classList.add("text-dark")
+    }
+    else if (orderObj.orderStatus == "Delivered") {
+        orderStatus.classList.add("bg-primary")
+        orderStatus.classList.add("text-white")
+    }
+    else if (orderObj.orderStatus == "Cancelled") {
+        orderStatus.classList.add("bg-danger")
+        orderStatus.classList.add("text-white")
     }
 
 
@@ -164,4 +196,3 @@ async function showOrders() {
     }
 
 }
-showOrders()
