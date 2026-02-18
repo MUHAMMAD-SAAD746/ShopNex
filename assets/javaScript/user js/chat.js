@@ -24,6 +24,9 @@ var chats = document.getElementById("chat-messages")
 var ROOMID = ""
 var chatRef = null // for run time chat show
 
+var chatRoomObj;
+var rooms;
+
 
 
 
@@ -86,13 +89,13 @@ async function createRoom(userId, productId) {
 
 
 async function checkRoom(userId, productId) {
-    const chatSnap = await firebase.database().ref("chatRooms").get();
+    chatRoomObj = await firebase.database().ref("chatRooms").get();
 
-    if (!chatSnap.exists()) {
+    if (!chatRoomObj.exists()) {
         return await createRoom(userId, productId)
     }
 
-    const rooms = Object.values(chatSnap.val())
+    rooms = Object.values(chatRoomObj.val())
 
 
     for (let room of rooms) {
@@ -114,6 +117,9 @@ async function loadChat() {
     }
 
     ROOMID = await checkRoom(userId, productId)
+
+
+    loadSidebarChats();
 
     chatRef = firebase.database().ref("chats").child(ROOMID);
 
@@ -176,3 +182,57 @@ messageInput.addEventListener("keypress", function (e) {
 
 // Load chat on page load
 // window.addEventListener("load", loadChat);
+
+
+
+
+
+async function loadSidebarChats(){
+    const sidebar = document.querySelector(".chat-list");
+    sidebar.innerHTML = ""
+
+    if(!chatRoomObj || !chatRoomObj.exists()) {
+        sidebar.innerHTML = "<p class='text-muted text-center mt-3'>No active chats</p>"
+        return;
+    }
+
+    for (let room of rooms){
+        if(room.userId !== userId) continue;
+
+        const roomId = room.roomid;
+
+        const userSnap = await firebase.database()
+            .ref("users")
+            .child(room.userId)
+            .get();
+
+            console.log(room.userId);
+            
+
+        if(!userSnap.exists()) continue;
+
+        const user = userSnap.val();
+
+
+        const div = document.createElement("div");
+        div.className = "chat-item";
+        div.innerHTML = `
+            <img src="${user.profilePic || "https://placehold.co/48x48?text=User"}" class="chat-avatar" alt="User">
+            <div class="chat-info">
+                <div class="chat-name">
+                    ${user.fullName || "Unknown User"}
+                </div>
+            </div>
+        `;
+
+        div.addEventListener("click", async () => {
+            ROOMID = roomId;
+            chatRef = firebase.database().ref("chats").child(ROOMID);
+            loadChat();
+        });
+
+        sidebar.appendChild(div);
+    }
+}
+
+loadSidebarChats()
