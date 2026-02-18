@@ -92,7 +92,12 @@ sendBtn.addEventListener("click", async () => {
     }
 
     const messageKey = chatRef.push().key;
-    await chatRef.child(messageKey).set({ senderId: userId, productId, message: text });
+    await chatRef.child(messageKey).set({ 
+        senderId: userId, 
+        // productId, 
+        message: text,
+        timestamp: Date.now()
+    });
 
     messageInput.value = ""
     loadChat()

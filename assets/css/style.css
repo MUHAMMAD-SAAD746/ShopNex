@@ -126,6 +126,9 @@ body {
     width: auto;
 }
 
+.hide {
+    display: none !important;
+}
 
 .btn-danger {
     color: var(--text-white) !important;
