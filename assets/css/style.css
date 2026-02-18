@@ -19,7 +19,7 @@
     /* Chat Specific Variables */
     --chat-sidebar-width: 320px;
     --chat-bg: #f0f2f5;
-    --chat-bubble-sent: #e3f2fd;
+    --chat-bubble-sent: #d3e9f8;
     --chat-bubble-received: #ffffff;
     --chat-header-height: 60px;
 }
