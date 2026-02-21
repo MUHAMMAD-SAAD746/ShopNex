@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopNex</title>
+    <!-- Fav Icon Link -->
+    <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
     <!-- toastify CDN -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <!-- Bootstrap CSS CDN -->
@@ -18,47 +20,8 @@
 <body>
 
     <!-- Header / Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3 text-primary" href="index.html">ShopNex</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <form class="d-flex mx-auto w-50" action="user/products.html">
-                    <div class="input-group">
-                        <input class="form-control" type="search" placeholder="Search for products...">
-                        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
-                    </div>
-                </form>
-                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
-                    <select id="categorySelect" class="form-select border-dark" style="width: 150px;">
-                        <option value="">Category</option>
-                        <!-- <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="home-garden">Home & Garden</option> -->
-                    </select>
-                    <a href="user/orders.html" class="btn btn-outline-dark me-2" id="order-btn">
-                        <i class="bi bi-bag-check"></i>
-                    </a>
-                    <a href="" class="btn btn-outline-dark position-relative" id="cart-btn">
-                        <i class="bi bi-cart"></i>
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
-                            id="cart-count">
-                            3
-                        </span>
-                    </a>
-                    <a href="user/login.html" class="btn btn-primary" id="login-btn">Login</a>
-                    <a href="#" class="btn btn-primary" id="logout-btn" style="display: none;" onclick="logOut(event)">
-                        <div class="loader-spinner user-spinner mb-1 d-none mx-auto"
-                            style="background: #2f4c77; width: 20px; padding: 3px;" id="spinnerLogout"></div>
-                        <span id="logout-text"><i class="bi bi-box-arrow-right me-2"></i>Logout</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <nav id="navigation-bar"></nav>
+
 
     <!-- Hero Section -->
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -88,59 +51,18 @@
         </button>
     </div>
 
+
     <!-- Categories Section -->
     <section class="py-5">
         <div class="container">
             <h2 class="text-center fw-bold mb-5">Shop by Category</h2>
             <div class="row g-4 justify-content-center" id="category-container">
                 <div class="loader-spinner user-spinner"></div>
-                <!-- <div class="col-6 col-md-3">
-                    <a href="user/products.html" class="text-decoration-none text-dark">
-                        <div class="card border-0 h-100 text-center">
-                            <img src="https://placehold.co/200x200?text=Electronics"
-                                class="card-img-top rounded-circle mx-auto w-75 p-3" alt="Electronics">
-                            <div class="card-body">
-                                <h5 class="card-title">Electronics</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div> -->
-                <!-- <div class="col-6 col-md-3">
-                    <a href="user/products.html" class="text-decoration-none text-dark">
-                        <div class="card border-0 h-100 text-center">
-                            <img src="https://placehold.co/200x200?text=Clothing"
-                                class="card-img-top rounded-circle mx-auto w-75 p-3" alt="Clothing">
-                            <div class="card-body">
-                                <h5 class="card-title">Clothing</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div> -->
-                <!-- <div class="col-6 col-md-3">
-                    <a href="user/products.html" class="text-decoration-none text-dark">
-                        <div class="card border-0 h-100 text-center">
-                            <img src="https://placehold.co/200x200?text=Home"
-                                class="card-img-top rounded-circle mx-auto w-75 p-3" alt="Home">
-                            <div class="card-body">
-                                <h5 class="card-title">Home & Decor</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div> -->
-                <!-- <div class="col-6 col-md-3">
-                    <a href="user/products.html" class="text-decoration-none text-dark">
-                        <div class="card border-0 h-100 text-center">
-                            <img src="https://placehold.co/200x200?text=Beauty"
-                                class="card-img-top rounded-circle mx-auto w-75 p-3" alt="Beauty">
-                            <div class="card-body">
-                                <h5 class="card-title">Beauty</h5>
-                            </div>
-                        </div>
-                    </a>
-                </div> -->
+                <!-- ========= Category Cards Will Appear Here ========= -->
             </div>
         </div>
     </section>
+
 
     <!-- Featured Products -->
     <section class="py-5 bg-light">
@@ -151,76 +73,11 @@
             </div>
             <div class="row g-4 justify-content-center" id="featured-products">
                 <div class="loader-spinner user-spinner"></div>
-                <!-- Product Card 1 -->
-                <!-- <div class="col-md-3 col-sm-6">
-                    <div class="card h-100 product-card">
-                        <span class="badge bg-danger position-absolute top-0 start-0 m-3">-20%</span>
-                        <img src="https://placehold.co/300x300" class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <h5 class="card-title fs-6">Wireless Noise Cancelling Headphones</h5>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-bold text-primary">$199.00</span>
-                                <small class="text-decoration-line-through text-muted">$249.00</small>
-                            </div>
-                            <div class="d-grid">
-                                <a href="user/cart.html" class="btn btn-outline-primary btn-sm rounded-pill">Add to
-                                    Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- Product Card 2 -->
-                <!-- <div class="col-md-3 col-sm-6">
-                    <div class="card h-100 product-card">
-                        <img src="https://placehold.co/300x300" class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <h5 class="card-title fs-6">Classic Leather Watch</h5>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-bold text-primary">$120.00</span>
-                            </div>
-                            <div class="d-grid">
-                                <a href="user/cart.html" class="btn btn-outline-primary btn-sm rounded-pill">Add to
-                                    Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- Product Card 3 -->
-                <!-- <div class="col-md-3 col-sm-6">
-                    <div class="card h-100 product-card">
-                        <img src="https://placehold.co/300x300" class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <h5 class="card-title fs-6">Running Shoes</h5>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-bold text-primary">$85.00</span>
-                            </div>
-                            <div class="d-grid">
-                                <a href="user/cart.html" class="btn btn-outline-primary btn-sm rounded-pill">Add to
-                                    Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- Product Card 4 -->
-                <!-- <div class="col-md-3 col-sm-6">
-                    <div class="card h-100 product-card">
-                        <span class="badge bg-success position-absolute top-0 start-0 m-3">New</span>
-                        <img src="https://placehold.co/300x300" class="card-img-top" alt="Product">
-                        <div class="card-body">
-                            <h5 class="card-title fs-6">Smartphone 12 Pro</h5>
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-bold text-primary">$999.00</span>
-                            </div>
-                            <div class="d-grid">
-                                <a href="user/cart.html" class="btn btn-outline-primary btn-sm rounded-pill">Add to
-                                    Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                <!-- ======== Featured Product Cards will appear here ======= -->
             </div>
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer class="bg-dark text-white pt-5 pb-3">
@@ -293,6 +150,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- Bootstrap CDN Javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Navigation bar js -->
+    <script src="./assets/javaScript/user js/navigation.js"></script>
     <!-- Custom Javascript -->
     <script src="./assets/javaScript/app.js"></script>
 </body>

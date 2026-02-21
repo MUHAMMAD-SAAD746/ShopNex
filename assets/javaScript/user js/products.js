@@ -76,8 +76,15 @@ async function getCategory() {
 
             categoryCount.innerHTML += `
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="${categoryObj[i].ID}" data-name="${categoryObj[i].categoryName}">
-                        <label class="form-check-label" for="cat1">${categoryObj[i].categoryName} (120)</label>
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" value="${categoryObj[i].ID}" 
+                            data-name="${categoryObj[i].categoryName}"
+                            id="${categoryObj[i].ID}"
+                        >
+                        <label class="form-check-label" for="${categoryObj[i].ID}">
+                            ${categoryObj[i].categoryName}
+                        </label>
                     </div>
                 `
         }

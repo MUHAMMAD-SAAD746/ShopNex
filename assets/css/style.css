@@ -398,7 +398,14 @@ body {
     flex-direction: column;
     background-color: var(--chat-bg);
     min-width: 0;
+    height: 100%;
     /* Prevent flex overflow */
+}
+
+.chat-active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* Product Context Bar */
