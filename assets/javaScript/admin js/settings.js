@@ -14,10 +14,12 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
 }
 
 
+// JS below is for Terms & Condition Tab
+// ======================================
 
-const termsConditionField = document.querySelector("#terms-condition-field")
+const termsConditionField = document.querySelector("#TC-editor")
 const conditionBtn = document.querySelector("#TC-btn")
-let termsAndCondition;
+const TCLoader = document.querySelector("#TC-loader")
 
 
 conditionBtn.addEventListener("click", async () => {
@@ -39,3 +41,76 @@ conditionBtn.addEventListener("click", async () => {
         })
         .catch(error => console.log(error));
 });
+
+
+
+const fetchTermsAndCondition = async () => {
+    let snapShot = await firebase.database().ref("Terms And Condition").get()
+    TCLoader.classList.add("d-none")
+    termsConditionField.classList.remove("d-none")
+
+    if (snapShot.exists()) {
+        const data = snapShot.val().content
+        quill.root.innerHTML = data
+    }
+    else {
+        quill.root.innerHTML = ""
+    }
+}
+fetchTermsAndCondition()
+
+
+
+
+
+// JS below is for Privacy Policy tab
+// ==================================
+
+const privacyField = document.querySelector("#privacy-quill")
+const privacyBtn = document.querySelector("#privacy-btn")
+const privacyLoader = document.querySelector("#privacy-loader")
+
+
+privacyBtn.addEventListener("click",async () => {
+    const privacyPolicyField = privacyQuill.root.innerHTML.trim();
+
+    if (!privacyPolicyField || privacyPolicyField === "<p><br></p>") {
+        toast("Please enter the Privacy Policy before saving.");
+        return;
+    }
+
+    try{
+        await firebase.database().ref("Privacy Policy").set({
+        content : privacyPolicyField,
+        updatedAt : Date.now()
+        })
+        toast("Privacy Policy Updated Sucessfullly.", "success")
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+
+
+const fetchPrivacyPolicy = async () => {
+    let snapShot = await firebase.database().ref("Privacy Policy").get()
+    privacyLoader.classList.add("d-none")
+    privacyField.classList.remove("d-none")
+
+    if(snapShot.exists()){
+        privacyQuill.root.innerHTML = snapShot.val().content
+    }
+    else {
+        privacyQuill.root.innerHTML = ""
+    }
+}
+fetchPrivacyPolicy()
+
+
+
+
+
+// JS below is for Help & Feedback tab
+// ===================================
+
+

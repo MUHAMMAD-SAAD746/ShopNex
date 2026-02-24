@@ -75,25 +75,28 @@
                             <div class="tab-pane fade show active" id="terms">
                                 <form>
                                     <div class="mb-3">
-                                        <!-- <textarea class="form-control" rows="10"
-                                            placeholder="Enter Terms & Conditions..."
-                                            id="terms-condition-field"></textarea> -->
-
                                         <!-- Quill Editor Container -->
-                                        <div id="editor" style="height: 300px; background-color: #fff;"></div>
+                                        <div id="TC-editor" style="height: 300px; background-color: #fff;" class="d-none"></div>
+                                        <div class="loader-spinner ld-primary mx-auto mt-3" id="TC-loader"></div>
                                     </div>
                                     <button type="button" class="btn btn-primary" id="TC-btn">Save Changes</button>
                                 </form>
                             </div>
+
+                            <!-- DIV below is for Privacy Policy Content -->
                             <div class="tab-pane fade" id="privacy">
                                 <form>
                                     <div class="mb-3">
-                                        <textarea class="form-control" rows="10"
-                                            placeholder="Enter Privacy Policy..."></textarea>
+                                        <!-- Quill Editor Container -->
+                                        <div id="privacy-quill" style="height: 300px; background-color: #fff;" class="d-none"></div>
+                                        <div class="loader-spinner ld-primary mx-auto mt-3" id="privacy-loader"></div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-primary" id="privacy-btn">Save Changes</button>
                                 </form>
                             </div>
+
+
+                            <!-- Below is the DIV for Help & FeedBack tab -->
                             <div class="tab-pane fade" id="help">
                                 <div class="row">
                                     <!-- Left Column: Manage Predefined Feedback -->
@@ -208,7 +211,11 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <!-- Initialize Quill editor -->
     <script>
-        const quill = new Quill('#editor', {
+        const quill = new Quill('#TC-editor', {
+            theme: 'snow'
+        });
+
+        const privacyQuill = new Quill('#privacy-quill', {
             theme: 'snow'
         });
     </script>
