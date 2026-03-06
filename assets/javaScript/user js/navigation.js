@@ -1,12 +1,13 @@
 const currentPage = window.location.pathname.split("/").pop();
 console.log(currentPage);
+console.log(typeof(currentPage));
 
 
 
 const navbar = `
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3 text-primary" href="index.html">ShopNex</a>
+            <a class="navbar-brand fw-bold fs-3 text-primary" href="${currentPage=="index.html"?currentPage:"../index.html"}">ShopNex</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -35,10 +36,10 @@ const navbar = `
                     <a href="user/chat.html" class="btn btn-outline-dark me-2" id="chat-btn">
                         <i class="bi bi-chat-left-dots"></i>
                     </a>
-                    <a href="user/login.html" class="btn btn-primary" id="login-btn">Login</a>
+                    <a href="${currentPage=="index.html"?"user/login.html":"../user/login.html"}" class="btn btn-primary" id="login-btn">Login</a>
                     <a href="#" class="btn btn-primary" id="logout-btn" style="display: none;" onclick="logOut(event)">
                         <div class="loader-spinner user-spinner mb-1 d-none mx-auto"
-                            style="background: #2f4c77; width: 20px; padding: 3px;" id="spinnerLogout"></div>
+                            style="background: #254370; width: 20px; padding: 3px;" id="spinnerLogout"></div>
                         <span id="logout-text"><i class="bi bi-box-arrow-right me-2"></i>Logout</span>
                     </a>
                 </div>
@@ -68,3 +69,55 @@ if (currentPage === "index.html" || currentPage === "") {
     orderButton.href = "../user/orders.html";
     chatBtn.href = "../user/chat.html";
 }
+
+
+
+
+var logoutText = document.getElementById("logout-text")
+
+function logOut(event) {
+    event.preventDefault();
+    spinnerLogout.classList.remove("d-none")
+    logoutText.classList.add("d-none")
+
+    firebase.auth().signOut()
+        .then(() => {
+            localStorage.removeItem("userLoggedIn");
+            localStorage.removeItem("userID");
+            redirect();
+        })
+        .catch((error) => {
+            console.error("Logout error:", error);
+        })
+}
+
+
+
+
+
+var logOutBtn = document.getElementById("logout-btn")
+var logInBtn = document.getElementById("login-btn")
+var cartCount = document.getElementById("cart-count")
+
+function redirect() {
+    userLoggedIn = localStorage.getItem("userLoggedIn");
+
+    if (userLoggedIn === "true") {
+        logOutBtn.style.display = "inline"
+        logInBtn.style.display = "none"
+
+        cartObj = JSON.parse(localStorage.getItem("cart")) || []
+
+        if (cartObj.length > 0) {
+            cartCount.classList.remove("d-none")
+            cartCount.textContent = cartObj.length;
+        }
+    }
+    else {
+        console.log("else block")
+        logOutBtn.style.display = "none"
+        logInBtn.style.display = "inline"
+        cartCount.classList.add("d-none")
+    }
+}
+redirect(); // protect dashboard

@@ -26,35 +26,12 @@ var cartCount = document.getElementById("cart-count")
 var loading = document.getElementById("loader-loading")
 
 
-function redirect() {
+function clearPageStorage() {
     userLoggedIn = localStorage.getItem("userLoggedIn") || "";
-
-    if (userLoggedIn === "true") {
-        logOutBtn.style.display = "inline"
-        logInBtn.style.display = "none"
-
-        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
-        console.log(cartObj);
-
-        if (cartObj.length > 0) {
-            cartCount.classList.remove("d-none")
-            cartCount.textContent = cartObj.length;
-        }
-    }
-    else {
-        logOutBtn.style.display = "none"
-        logInBtn.style.display = "inline"
-        window.location.href = "../index.html"
-    }
 }
-redirect(); // protect dashboard
+clearPageStorage();
 
-function logOut(event) {
-    event.preventDefault();
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("userID");
-    redirect();
-}
+
 
 async function getOrdersFromDb() {
     await firebase.database().ref(`orders`).get().then((orderSnap) => {

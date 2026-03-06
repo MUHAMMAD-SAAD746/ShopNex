@@ -24,39 +24,10 @@ var logInBtn = document.getElementById("login-btn")
 var cartCount = document.getElementById("cart-count")
 var tax = document.getElementById("tax")
 
-function redirect() {
+function clearPageStorage() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
-
-    if (userLoggedIn === "true") {
-        logOutBtn.style.display = "inline"
-        logInBtn.style.display = "none"
-
-        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
-
-        if (cartObj.length > 0) {
-            // cartCount.classList.remove("d-none")
-            cartCount.textContent = cartObj.length;
-        }
-        else{
-            cartCount.classList.add("d-none")
-        }
-
-        console.log(cartObj.length);
-    }
-    else {
-        logOutBtn.style.display = "none"
-        logInBtn.style.display = "inline"
-        window.location.href = "../index.html"
-    }
 }
-redirect(); // protect dashboard
-
-function logOut(event) {
-    event.preventDefault();
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("userID");
-    redirect();
-}
+clearPageStorage();
 
 
 
@@ -79,8 +50,8 @@ function getSelectedProducts() {
 
     if (cartObj.length == 0) {
         tableBody.innerHTML = `
-            <tr id="loader-loading">
-                <td colspan="5" class="text-center">Cart is empty.</td>
+            <tr>
+                <td colspan="5" class="text-center pt-4">Cart is empty.</td>
             </tr>
         `
     }
@@ -132,7 +103,11 @@ function getSelectedProducts() {
             }
         }
     }
-    localStorage.setItem("cart", JSON.stringify(cartObj));
+
+    if (cartObj.length > 0) {
+        localStorage.setItem("cart", JSON.stringify(cartObj));
+    }
+
     orderSummary()
 }
 
@@ -203,7 +178,7 @@ function orderSummary() {
     var total = 0;
     var taxAmount = 0
 
-    if(cartObj.length > 0){
+    if (cartObj.length > 0) {
         taxAmount = 28.40;
     }
 
@@ -215,7 +190,7 @@ function orderSummary() {
     tax.textContent = `${taxAmount}`
     totalBill.textContent = (total + taxAmount).toFixed(2)
 
-    
+
 }
 
 

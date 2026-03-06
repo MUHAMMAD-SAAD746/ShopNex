@@ -22,12 +22,24 @@
     --chat-bubble-sent: #d3e9f8;
     --chat-bubble-received: #ffffff;
     --chat-header-height: 60px;
+
+    /* user navbar */
+    --navbar-height: 56px;
+
+    /* admin sidebar */
+    --admin-sidebar-width: 250px;
+    --collapsed-sidebar-width: 80px;
 }
 
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-light);
     color: var(--text-dark);
+}
+
+body.user-layout {
+    padding-top: calc(var(--navbar-height));
+    /* padding-top: 70px; */
 }
 
 /* Utilities */
@@ -47,7 +59,7 @@ body {
 }
 
 .admin-sidebar {
-    width: 250px;
+    width: var(--admin-sidebar-width);
     height: 100vh;
     position: fixed;
     top: 0;
@@ -69,7 +81,7 @@ body {
 }
 
 .admin-sidebar.collapsed {
-    width: 80px;
+    width: var(--collapsed-sidebar-width);
 }
 
 .admin-sidebar.collapsed .nav-title,
@@ -160,6 +172,14 @@ body {
 }
 
 /* User Layout */
+#navigation-bar {
+    position: fixed;
+    top: 0;
+    z-index: 1030;
+    height: var(--navbar-height);
+    width: 100%;
+}
+
 .hero-section {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/1920x600?text=Hero+Image');
     background-size: cover;
@@ -326,6 +346,11 @@ body {
     height: 100vh;
     background-color: var(--bg-white);
     overflow: hidden;
+}
+
+/* user height set */
+body.user-layout .chat-container {
+    height: calc(100vh - var(--navbar-height));
 }
 
 .chat-sidebar {

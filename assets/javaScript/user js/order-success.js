@@ -20,32 +20,12 @@ var cartCount = document.getElementById("cart-count")
 var userLoggedIn;
 
 
-function redirect() {
+function clearPageStorage() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
-
-    if (userLoggedIn === "true") {
-        logOutBtn.style.display = "inline"
-        logInBtn.style.display = "none"
-
-        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
-        cartCount.classList.remove("d-none")
-        cartCount.textContent = cartObj.length;
-        console.log(cartObj.length);
-    }
-    else {
-        logOutBtn.style.display = "none"
-        logInBtn.style.display = "inline"
-        window.location.href = "../index.html"
-    }
 }
-redirect(); // protect dashboard
+clearPageStorage();
 
-function logOut(event) {
-    event.preventDefault();
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("userID");
-    redirect();
-}
+
 
 var orderElement = document.getElementById("order-element")
 var orderObj = JSON.parse(localStorage.getItem("order"))

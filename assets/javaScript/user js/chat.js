@@ -14,7 +14,7 @@ function toast(msg, className = "error", duration = 2000, destination = null) {
 }
 
 
-let productId = localStorage.getItem("productID") || "";
+let productId = localStorage.getItem("productID");
 let userId = localStorage.getItem("userID") || "";
 
 const sendBtn = document.getElementById("sendBtn");

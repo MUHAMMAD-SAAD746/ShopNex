@@ -26,51 +26,33 @@ var userLoggedIn;
 var spinnerLogout = document.getElementById("spinnerLogout")
 var logoutText = document.getElementById("logout-text")
 
-function redirect() {
+function clearPageStorage() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
 
     localStorage.removeItem("ProductId")
     localStorage.removeItem("productID")
     localStorage.removeItem("categoryID")
     localStorage.removeItem("categoryName")
-
-
-    if (userLoggedIn === "true") {
-        logOutBtn.style.display = "inline"
-        logInBtn.style.display = "none"
-
-        cartObj = JSON.parse(localStorage.getItem("cart")) || []
-
-        if (cartObj.length > 0) {
-            cartCount.classList.remove("d-none")
-            cartCount.textContent = cartObj.length;
-        }
-    }
-    else {
-        console.log("else block")
-        logOutBtn.style.display = "none"
-        logInBtn.style.display = "inline"
-        cartCount.classList.add("d-none")
-    }
+    localStorage.removeItem("orderID")
 }
-redirect(); // protect dashboard
+clearPageStorage();
 
 
-function logOut(event) {
-    event.preventDefault();
-    spinnerLogout.classList.remove("d-none")
-    logoutText.classList.add("d-none")
+// function logOut(event) {
+//     event.preventDefault();
+//     spinnerLogout.classList.remove("d-none")
+//     logoutText.classList.add("d-none")
 
-    firebase.auth().signOut()
-        .then(() => {
-            localStorage.removeItem("userLoggedIn");
-            localStorage.removeItem("userID");
-            redirect();
-        })
-        .catch((error) => {
-            console.error("Logout error:", error);
-        })
-}
+//     firebase.auth().signOut()
+//         .then(() => {
+//             localStorage.removeItem("userLoggedIn");
+//             localStorage.removeItem("userID");
+//             redirect();
+//         })
+//         .catch((error) => {
+//             console.error("Logout error:", error);
+//         })
+// }
 
 
 

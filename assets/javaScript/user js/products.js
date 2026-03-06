@@ -25,37 +25,13 @@ var cartCount = document.getElementById("cart-count")
 var userLoggedIn;
 
 
-function redirect() {
+function clearPageStorage() {
     userLoggedIn = localStorage.getItem("userLoggedIn");
     localStorage.removeItem("productID")
-
-    if (userLoggedIn === "true") {
-        logOutBtn.style.display = "inline"
-        logInBtn.style.display = "none"
-
-        cartObj = JSON.parse(localStorage.getItem("cart")) || [];
-
-        if (cartObj.length > 0) {
-            cartCount.classList.remove("d-none")
-            cartCount.textContent = cartObj.length;
-        }
-
-        console.log(cartObj.length);
-    }
-    else {
-        logOutBtn.style.display = "none"
-        logInBtn.style.display = "inline"
-        window.location.href = "../index.html"
-    }
 }
-redirect(); // protect dashboard
+clearPageStorage();
 
-function logOut(event) {
-    event.preventDefault();
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("userID");
-    redirect();
-}
+
 
 async function getCategory() {
     const name = localStorage.getItem("categoryName")
@@ -191,78 +167,6 @@ async function productDetailRedirect(event, id) {
 
 
 
-// function categoryFilter() {
-
-//     var checkedCategories = [];
-//     var checkboxes = categoryCount.querySelectorAll("input[type='checkbox']");
-
-//     // collect selected categories
-//     for (var i = 0; i < checkboxes.length; i++) {
-//         if (checkboxes[i].checked) {
-//             checkedCategories.push(checkboxes[i].value);
-//         }
-//     }
-
-//     // firebase.database().ref("products").get().then(function (snap) {
-
-//         // var productObj = Object.values(snap.val());
-//         productContainer.innerHTML = "";
-
-//         // if no category selected → show all
-//         if (checkedCategories.length === 0) {
-//             getProducts();
-//             return;
-//         }
-
-//         for (var i = 0; i < productObj.length; i++) {
-
-//             if (checkedCategories.indexOf(productObj[i].categoryID) === -1) {
-//                 continue;
-//             }
-
-//             var discountPercent = productObj[i].discount;
-//             var originalPrice = productObj[i].price;
-//             var discountedPrice = originalPrice * (1 - (discountPercent / 100));
-//             discountedPrice = Number(discountedPrice.toFixed(2));
-
-//             var hideDiscount = productObj[i].discount == "0" ? "d-none" : "";
-
-//             productContainer.innerHTML += `
-//                 <div class="col-md-4 col-sm-6">
-//                     <div class="card h-100 product-card">
-//                         <span class="badge bg-danger position-absolute top-0 start-0 m-3 ${hideDiscount}">
-//                             -${productObj[i].discount}%
-//                         </span>
-//                         <img src="${productObj[i].imageURL}" class="card-img-top">
-//                         <div class="card-body">
-//                             <h5 class="card-title fs-6">${productObj[i]["Product Title"]}</h5>
-//                             <div class="d-flex justify-content-between mb-2">
-//                                 <span class="fw-bold text-primary">$${discountedPrice}</span>
-//                                 <small class="text-muted text-decoration-line-through ${hideDiscount}">
-//                                     $${originalPrice}
-//                                 </small>
-//                             </div>
-//                             <div class="d-grid">
-//                                 <button class="btn btn-outline-primary btn-sm rounded-pill"
-//                                     onclick="productDetailRedirect(event, '${productObj[i].ID}')">
-//                                     View Details
-//                                 </button>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             `;
-//         }
-//     // });
-// }
-
-
-
-
-
-
-
-
 
 
 
@@ -297,6 +201,10 @@ function categoryFilter() {
     productContainer.innerHTML = "";
 
     if (checkedCategories.length === 0) {
+        // Clear old category filter from storage
+        localStorage.removeItem("categoryID");
+        localStorage.removeItem("categoryName");
+        
         getProducts();
         return;
     }
