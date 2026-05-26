@@ -76,7 +76,8 @@
                                 <form>
                                     <div class="mb-3">
                                         <!-- Quill Editor Container -->
-                                        <div id="TC-editor" style="height: 300px; background-color: #fff;" class="d-none"></div>
+                                        <div id="TC-editor" style="height: 300px; background-color: #fff;"
+                                            class="d-none"></div>
                                         <div class="loader-spinner ld-primary mx-auto mt-3" id="TC-loader"></div>
                                     </div>
                                     <button type="button" class="btn btn-primary" id="TC-btn">Save Changes</button>
@@ -88,7 +89,8 @@
                                 <form>
                                     <div class="mb-3">
                                         <!-- Quill Editor Container -->
-                                        <div id="privacy-quill" style="height: 300px; background-color: #fff;" class="d-none"></div>
+                                        <div id="privacy-quill" style="height: 300px; background-color: #fff;"
+                                            class="d-none"></div>
                                         <div class="loader-spinner ld-primary mx-auto mt-3" id="privacy-loader"></div>
                                     </div>
                                     <button type="button" class="btn btn-primary" id="privacy-btn">Save Changes</button>
@@ -102,22 +104,28 @@
                                     <!-- Left Column: Manage Predefined Feedback -->
                                     <div class="col-md-7 border-end">
                                         <h6 class="fw-bold mb-3">Manage Predefined Feedback / FAQs</h6>
-                                        <form class="mb-4">
+                                        <form class="mb-4" id="faq-form">
                                             <div class="mb-3">
-                                                <label class="form-label small text-muted">Add New FAQ / Help
+                                                <label class="form-label small text-muted" for="faq-question">Add New
+                                                    FAQ / Help
                                                     Content</label>
+
+                                                <input type="text" class="form-control mb-3" id="faq-question"
+                                                    placeholder="Enter your question" required>
+
                                                 <textarea class="form-control" rows="4"
-                                                    placeholder="Enter question and answer..."></textarea>
+                                                    placeholder="Enter your answer..." id="faq-answer"
+                                                    required></textarea>
                                             </div>
-                                            <button type="submit" class="btn btn-sm btn-success"><i
-                                                    class="bi bi-plus-circle me-1"></i> Add
-                                                New</button>
+                                            <button type="submit" class="btn btn-sm btn-success" id="add-faq">
+                                                <i class="bi bi-plus-circle me-1"></i> Add New
+                                            </button>
                                         </form>
 
                                         <h6 class="fw-bold mb-3 border-top pt-3">Existing FAQs</h6>
-                                        <div class="list-group list-group-flush">
+                                        <div class="list-group list-group-flush" id="faq-container">
                                             <!-- Item 1 -->
-                                            <div
+                                            <!-- <div
                                                 class="list-group-item d-flex justify-content-between align-items-center px-0">
                                                 <div>
                                                     <small class="fw-bold d-block">How do I track my order?</small>
@@ -131,9 +139,9 @@
                                                     <button class="btn btn-outline-danger"><i
                                                             class="bi bi-trash"></i></button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- Item 2 -->
-                                            <div
+                                            <!-- <div
                                                 class="list-group-item d-flex justify-content-between align-items-center px-0">
                                                 <div>
                                                     <small class="fw-bold d-block">Return Policy?</small>
@@ -147,7 +155,7 @@
                                                     <button class="btn btn-outline-danger"><i
                                                             class="bi bi-trash"></i></button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- Item 3 -->
                                             <div
                                                 class="list-group-item d-flex justify-content-between align-items-center px-0">
@@ -169,12 +177,62 @@
                                     <!-- Right Column: View User Feedback -->
                                     <div class="col-md-5">
                                         <h6 class="fw-bold mb-3">User Feedback Inbox</h6>
-                                        <div class="border rounded p-3 bg-light" style="min-height: 300px;">
-                                            <div class="text-center text-muted mt-5 font-italic">
+                                        <div class="border rounded p-3 bg-light"
+                                            style="min-height: 300px; max-height: 500px; overflow-y: auto;">
+
+                                            <div class="user-feedback">
+                                                <!-- Static User Feedback Items -->
+                                                <div class="mb-3">
+                                                    <div class="fw-bold">John Doe <small
+                                                            class="text-muted">john@example.com</small></div>
+                                                    <div class="text-muted mb-2">"I love your app, but the checkout page
+                                                        sometimes crashes."</div>
+
+                                                    <!-- Admin reply input -->
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            placeholder="Write a reply..." id="admin-reply">
+                                                        <button class="btn btn-primary btn-sm">Send</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="fw-bold">Jane Smith <small
+                                                            class="text-muted">jane@example.com</small></div>
+                                                    <div class="text-muted mb-2">"Can you add more payment methods?"
+                                                    </div>
+
+                                                    <!-- Admin reply input -->
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            placeholder="Write a reply...">
+                                                        <button class="btn btn-primary btn-sm">Send</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="fw-bold">Ali Khan <small
+                                                            class="text-muted">ali@example.com</small></div>
+                                                    <div class="text-muted mb-2">"The app is great, but notifications
+                                                        are
+                                                        delayed."</div>
+
+                                                    <!-- Admin reply input -->
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            placeholder="Write a reply...">
+                                                        <button class="btn btn-primary btn-sm">Send</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Empty state if no feedback -->
+                                            <div class="text-center text-muted mt-5 font-italic d-none"
+                                                id="empty-feedback">
                                                 <i class="bi bi-inbox fs-1 d-block mb-3"></i>
                                                 <p>No new feedback from users.</p>
                                             </div>
-                                            <!-- Placeholder for dynamic feedback list -->
+
                                         </div>
                                     </div>
                                 </div>
@@ -220,6 +278,11 @@
         });
     </script>
 
+    <!-- email js cdn -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- template id =>  template_dyfhyku -->
+    <!-- service Id =>     service_r9j5kcl -->
+    <!-- public key =>   9_hjY2xponWyMD1_Z -->
 
     <!-- Toastify javaScript CDN -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>

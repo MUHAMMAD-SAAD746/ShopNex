@@ -48,8 +48,10 @@ var logo = document.getElementById('logo');
 var collapsed = false;
 
 // retrieve the state from localStorage on page load
-var sidebarCollapsed = localStorage.getItem('sidebarCollapsed');
-if(sidebarCollapsed === "true"){
+var sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === "true";
+collapsed = sidebarCollapsed;
+
+if(collapsed){
     collapsed = true;
     sidebar.classList.add('collapsed');
     logo.src = "../assets/images/favicon.png";
