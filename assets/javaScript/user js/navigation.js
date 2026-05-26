@@ -15,13 +15,13 @@ const navbar = `
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarContent">
-                <form class="d-flex mx-auto w-50" action="user/products.html">
+                <form class="d-flex mx-auto w-50 mobile-search" action="user/products.html">
                     <div class="input-group">
                         <input class="form-control" type="search" placeholder="Search for products...">
                         <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
-                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0 mobile-nav-buttons">
                     <select id="categorySelect" class="form-select border-dark" style="width: 125px;">
                         <option value="">Category</option>
                     </select>

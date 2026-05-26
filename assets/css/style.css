@@ -576,3 +576,32 @@ body.user-layout .chat-container {
         height: 60%;
     }
 }
+
+
+@media (max-width: 991px) {
+
+    .mobile-nav-buttons {
+        flex-wrap: wrap;
+    }
+
+    .mobile-nav-buttons > * {
+        flex: 1 1 45%;
+        width: 100%;
+    }
+
+    /* Make login/logout full row */
+    #login-btn,
+    #logout-btn {
+        flex: 1 1 100%;
+    }
+
+    .mobile-search {
+        width: 100% !important;
+        margin-top: 20px;
+    }
+
+    .mobile-search .input-group {
+        width: 100%;
+    }
+
+}
