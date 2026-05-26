@@ -1,6 +1,9 @@
 const currentPage = window.location.pathname.split("/").pop();
-console.log(currentPage);
-console.log(typeof(currentPage));
+
+const isGitHub = window.location.hostname.includes("github.io");
+const basePath = isGitHub
+    ? "/ShopNex/"
+    : "./";
 
 
 
@@ -36,7 +39,7 @@ const navbar = `
                     <a href="user/chat.html" class="btn btn-outline-dark me-2" id="chat-btn">
                         <i class="bi bi-chat-left-dots"></i>
                     </a>
-                    <a href="${currentPage=="index.html"?"user/login.html":"../user/login.html"}" class="btn btn-primary" id="login-btn">Login</a>
+                    <a href="${basePath}user/login.html" class="btn btn-primary" id="login-btn">Login</a>
                     <a href="#" class="btn btn-primary" id="logout-btn" style="display: none;" onclick="logOut(event)">
                         <div class="loader-spinner user-spinner mb-1 d-none mx-auto"
                             style="background: #254370; width: 20px; padding: 3px;" id="spinnerLogout"></div>
